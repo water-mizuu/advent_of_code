@@ -1,5 +1,7 @@
 import "dart:io";
 
+/// The beauty of pattern matching.
+/// It literally matches the spec.
 bool? compare(Object left, Object right) {
   /// Insert working switch-case here.
   (Object, Object) pair = (left, right);
@@ -30,6 +32,9 @@ bool? compare(Object left, Object right) {
   }
 }
 /// I could've just used `jsonDecode`, but meh.
+///
+/// This is also like a parser-combinator thing but made by hand,
+/// which is itself a variant of recursive descent.
 (Object parsed, int index)? _parse(String input, [int i = 0]) {
   if (input[i] == "[") {
     if (i + 1 case int i) {
@@ -98,22 +103,25 @@ void part1() {
 }
 
 void part2() {
+  /// The inputs are supposed to be [[2]] and [[6]],
+  /// but it's all the same in the end.
   const int left = 2;
   const int right = 6;
 
-  List<String> lines = File("bin/day_13/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/day_13/assets/main.txt")
+      .readAsLinesSync()
+      .where((line) => line.isNotEmpty)
+      .toList();
 
   List<Object> packets = [left, right];
   for (String line in lines) {
-    if (line.isEmpty) {
-      continue;
-    }
-
     if (parse(line) case Object parsed) {
       packets.add(parsed);
     }
   }
 
+  /// There is most likely a more efficient way to do this,
+  /// but I like following the script.
   packets.sort((left, right) => compare(left, right) ?? true ? -1 : 1);
   int decoderKey = (packets.indexOf(left) + 1) * (packets.indexOf(right) + 1);
 
