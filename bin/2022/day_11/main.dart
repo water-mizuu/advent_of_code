@@ -4,6 +4,8 @@ typedef List2<T> = List<List<T>>;
 typedef Operation = (String operator, Object left, Object right);
 typedef ParseResult = (Object operationOrValue, int nextIndex);
 typedef Test = bool Function(int);
+/// Considering the purpose of records, I might need to
+/// turn this into a class.
 typedef Monkey = ({
   int id,
   List<int> items,
@@ -14,6 +16,9 @@ typedef Monkey = ({
   int ifFalse,
 });
 
+/// An abstract class filled with all the functions needed in the
+/// over-engineered parser. Honestly expected more complicated operations
+/// in part 2.
 abstract class Parser {
   static int? parseMonkeyId(String line) {
     if (RegExp(r"Monkey (\d+)").firstMatch(line)?.group(1) case String idString) {
@@ -190,7 +195,7 @@ abstract class Parser {
   }
 
   static List<Monkey> parseMonkeys() {
-    List<String> lines = File("bin/day_11/assets/main.txt").readAsLinesSync();
+    List<String> lines = File("bin/2022/day_11/assets/main.txt").readAsLinesSync();
     List2<String> batches = batchInput(lines);
     List<Monkey> monkeys = batches.map(parseMonkey).whereType<Monkey>().toList();
 

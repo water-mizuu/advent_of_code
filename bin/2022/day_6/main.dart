@@ -2,7 +2,7 @@ import "dart:io";
 
 // Sliding window problem.
 void part1() {
-  String input = File("bin/day_6/assets/main.txt").readAsStringSync();
+  String input = File("bin/2022/day_6/assets/main.txt").readAsStringSync();
 
   for (int left = 0, right = 4; right < input.length; ++left, ++right) {
     bool found = true;
@@ -23,7 +23,7 @@ void part1() {
 
 // Larger sliding window problem.
 void part2() {
-  String input = File("bin/day_6/assets/main.txt").readAsStringSync();
+  String input = File("bin/2022/day_6/assets/main.txt").readAsStringSync();
 
   for (int left = 0, right = 14; right < input.length; ++left, ++right) {
     bool found = true;

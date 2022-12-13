@@ -12,7 +12,7 @@ int priority(String c) {
 }
 
 void part1() {
-  List<String> lines = File("bin/day_3/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_3/assets/main.txt").readAsLinesSync();
   int scores = lines
     // Split the string in half using some cursed regex
     .map((v) => v.split(RegExp("(?<=.{${v.length ~/ 2}})(?=.{${v.length ~/ 2}})")))
@@ -29,7 +29,7 @@ void part1() {
 }
 
 void part2() {
-  List<String> lines = File("bin/day_3/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_3/assets/main.txt").readAsLinesSync();
   int scores = lines
       // Group the lines into three in the most verbose way possible.
       .fold<List<List<String>>>([[]],

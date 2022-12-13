@@ -23,23 +23,24 @@ Table validTransitions(List2<int> grid) {
 
       for (Point offset in offsets) {
         /// I wonder when functional destructuring will come?
-        if (offset case (int xOffset, int yOffset)) {
-          int offsetX = x + xOffset;
-          int offsetY = y + yOffset;
+        if (offset case (int dx, int dy)) {
+          /// Coordinates of the neighbor.
+          int nx = x + dx;
+          int ny = y + dy;
 
           /// If the coordinates are outside the grid,
-          if (offsetX case < 0 || >= grid[y].length) {
+          if (nx case < 0 || >= grid[y].length) {
             continue;
           }
-          if (offsetY case < 0 || >= grid.length) {
+          if (ny case < 0 || >= grid.length) {
             continue;
           }
           /// or if it's too high up, then ignore it.
-          if (grid[offsetY][offsetX] - grid[y][x] case > 1) {
+          if (grid[ny][nx] - grid[y][x] > 1) {
             continue;
           }
 
-          next.add((offsetX, offsetY));
+          next.add((nx, ny));
         }
       }
     }
@@ -68,6 +69,8 @@ Iterable<int> solve(List<Point> start, Point target, Table transitions) sync* {
       /// it's because `transition[point]` is nullable.
       if (transitions[point] case List<Point> next) {
         for (Point transition in next) {
+          /// If we've found a path to the target, then yield.
+          /// But continue.
           if (transition == target) {
             yield length;
           } else {
@@ -82,7 +85,7 @@ Iterable<int> solve(List<Point> start, Point target, Table transitions) sync* {
 
 // Basically a maze.
 void part1() {
-  List2<String> input = File("bin/day_12/assets/main.txt") //
+  List2<String> input = File("bin/2022/day_12/assets/main.txt") //
       .readAsLinesSync()
       .map((v) => v.split(""))
       .toList();
@@ -99,7 +102,7 @@ void part1() {
     for (int y = 0; y < input.length; ++y)
       for (int x = 0; x < input[y].length; ++x)
         if (input[y][x] == "S") (x, y)
-  ].first;
+  ].single;
   Point target = [
     for (int y = 0; y < input.length; ++y)
       for (int x = 0; x < input[y].length; ++x)
@@ -114,7 +117,7 @@ void part1() {
 
 // Basically a multiple start.
 void part2() {
-  List2<String> input = File("bin/day_12/assets/main.txt") //
+  List2<String> input = File("bin/2022/day_12/assets/main.txt") //
       .readAsLinesSync()
       .map((v) => v.split(""))
       .toList();

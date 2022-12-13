@@ -69,7 +69,7 @@ Object? parse(String input) {
 }
 
 void part1() {
-  List<String> lines = File("bin/day_13/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_13/assets/main.txt").readAsLinesSync();
 
   List<(Object, Object)> pairs = [];
   List<String> pair = [];
@@ -108,7 +108,7 @@ void part2() {
   const int left = 2;
   const int right = 6;
 
-  List<String> lines = File("bin/day_13/assets/main.txt")
+  List<String> lines = File("bin/2022/day_13/assets/main.txt")
       .readAsLinesSync()
       .where((line) => line.isNotEmpty)
       .toList();

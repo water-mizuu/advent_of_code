@@ -108,7 +108,7 @@ void applyCommand(Stacks stacks, Command command, Mode mode) {
 }
 
 void part1() {
-  String input = File("bin/day_5/assets/main.txt")
+  String input = File("bin/2022/day_5/assets/main.txt")
       .readAsStringSync()
       .replaceAll("\r", "");
 
@@ -128,7 +128,7 @@ void part1() {
 }
 
 void part2() {
-  String input = File("bin/day_5/assets/main.txt")
+  String input = File("bin/2022/day_5/assets/main.txt")
       .readAsStringSync()
       .replaceAll("\r", "");
 

@@ -6,7 +6,7 @@ void part1() {
     "B": 2, "Y": 2,
     "C": 3, "Z": 3,
   };
-  List<String> lines = File("bin/day_2/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_2/assets/main.txt").readAsLinesSync();
 
   int totalScore = 0;
   for (String line in lines) {
@@ -36,7 +36,7 @@ void part2() {
     "Y": 0,
     "Z": 1,
   };
-  List<String> lines = File("bin/day_2/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_2/assets/main.txt").readAsLinesSync();
 
   int totalScore = 0;
   for (String line in lines) {

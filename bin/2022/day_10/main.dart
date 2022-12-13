@@ -1,7 +1,7 @@
 import "dart:io";
 
 void part1() {
-  List<String> commands = File("bin/day_10/assets/main.txt").readAsLinesSync();
+  List<String> commands = File("bin/2022/day_10/assets/main.txt").readAsLinesSync();
   /// One action equals one cycle.
   List<(String, Object?)> actions = [];
 
@@ -38,7 +38,7 @@ void part1() {
 }
 
 void part2() {
-  List<String> commands = File("bin/day_10/assets/main.txt").readAsLinesSync();
+  List<String> commands = File("bin/2022/day_10/assets/main.txt").readAsLinesSync();
   /// One action equals one cycle.
   List<(String, Object?)> actions = [];
 
@@ -85,7 +85,4 @@ void part2() {
 void main() {
   part1();
   part2();
-
-  ({int x, int y}) point = (x: 3, y: 5);
-  print(point.x);
 }
