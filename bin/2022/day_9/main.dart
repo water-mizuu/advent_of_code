@@ -38,70 +38,19 @@ Point moveTail(Point head, Point tail) {
       (headY - tailY).abs(),
     );
     if (distance > 1) {
-      bool isAligned = headY == tailY || headX == tailX;
-      int threshold = isAligned ? 1 : 0;
-
-      /// Since we're not attached to the head, we need to move *somehow*.
-      ///
-      /// If we're aligned, we need to move the tail in the direction
-      /// where it's at least 2 distance away.
-      ///
-      /// ┌───┬───┬───┬───┐
-      /// │[H]│ 1 │[T]│ 1 │ /// The [T] is aligned and is distance 2 away from [H],
-      /// ├───┼───┼───┼───┤ ///   so move it to the direction of the head.
-      /// │ 2 │ 1 │ 1 │ 1 │
-      /// ├───┼───┼───┼───┤
-      /// │ 2 │ 2 │ 2 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 3 │ 3 │ 3 │ 3 │
-      /// └───┴───┴───┴───┘
-      ///         │
-      ///         V
-      /// ┌───┬───┬───┬───┐
-      /// │[H]│[T]│ 1 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 1 │ 1 │ 1 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 2 │ 2 │ 2 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 3 │ 3 │ 3 │ 3 │
-      /// └───┴───┴───┴───┘
-      ///
-      ///
-      /// If it's not aligned, then we move both distances.
-      /// ┌───┬───┬───┬───┐
-      /// │[H]│ 1 │ 1 │ 1 │ /// The [T] is *not* aligned, so we move towards both
-      /// ├───┼───┼───┼───┤ ///   directions toward the [H] regardless.
-      /// │ 2 │ 1 │[T]│ 1 │
-      /// ├───┼───┼───┼───┤
-      /// │ 2 │ 1 │ 1 │ 1 │
-      /// ├───┼───┼───┼───┤
-      /// │ 2 │ 2 │ 2 │ 2 │
-      /// └───┴───┴───┴───┘
-      ///         │
-      ///         V
-      /// ┌───┬───┬───┬───┐
-      /// │[H]│[T]│ 1 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 1 │ 1 │ 1 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 2 │ 2 │ 2 │ 2 │
-      /// ├───┼───┼───┼───┤
-      /// │ 3 │ 3 │ 3 │ 3 │
-      /// └───┴───┴───┴───┘
-      ///
-      /// Coincidentally, this solves the supposed corner case
-      /// of part 2.
-
-      if (headY - tailY > threshold) {
+      if (headY - tailY > 0) {
+        /// If we need to move down, then move down.
         ++tailY;
-      } else if (tailY - headY > threshold) {
+      } else if (tailY - headY > 0) {
+        /// If we need to move up, then move up.
         --tailY;
       }
 
-      if (headX - tailX > threshold) {
+      if (headX - tailX > 0) {
+        /// If we need to move right, then move right.
         ++tailX;
-      } else if (tailX - headX > threshold) {
+      } else if (tailX - headX > 0) {
+        /// If we need to move left, then move left.
         --tailX;
       }
     }
