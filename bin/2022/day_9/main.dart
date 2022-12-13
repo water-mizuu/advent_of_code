@@ -65,27 +65,15 @@ void part1() {
   List<Move> moves = parseInput();
   Set<Point> visited = {};
 
-  int headY = 2;
-  int headX = 2;
-
-  int tailY = 1;
-  int tailX = 1;
+  Point head = (2, 2);
+  Point tail = (1, 1);
 
   for (Move move in moves) {
     if (move case (String direction, int count)) {
       for (int i = 0; i < count; ++i) {
-        if (moveHead((headX, headY), direction) case (int _headX, int _headY)) {
-          headX = _headX;
-          headY = _headY;
-        }
-
-        /// Make the tail catch up.
-        if (moveTail((headX, headY), (tailX, tailY)) case (int _tailX, int _tailY)) {
-          visited.add((_tailX, _tailY));
-
-          tailX = _tailX;
-          tailY = _tailY;
-        }
+        head = moveHead(head, direction);
+        tail = moveTail(head, tail);
+        visited.add(tail);
       }
     }
 
