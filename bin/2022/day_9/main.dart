@@ -108,9 +108,10 @@ void part2() {
 
         /// Make each of the knots catch up.
         for (int i = 1; i < knots.length; ++i) {
-          if ((knots[i - 1], knots[i]) case (Point head, Point tail)) {
-            knots[i] = moveTail(head, tail);
-          }
+          Point head = knots[i - 1];
+          Point tail = knots[i];
+
+          knots[i] = moveTail(head, tail);
         }
         visited.add(knots.last);
       }
