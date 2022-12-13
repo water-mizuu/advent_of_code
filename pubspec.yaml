@@ -1,0 +1,77 @@
+name: advent_of_code
+# cspell:disable
+environment:
+  sdk: ">=3.0.0-0"
+
+dependencies: {}
+  # ansicolor:
+  # archive:
+  # args:
+  # async:
+  # barcode:
+  # basic_utils:
+  # basics:
+  # built_collection:
+  # charcode:
+  # collection:
+  # collection_ext:
+  # copy_with_extension:
+  # crypto:
+  # darq:
+  # dart_code_metrics:
+  # dartx:
+  # date_format:
+  # dcli:
+  # decimal:
+  # demoji:
+  # dfunc:
+  # enum_to_string:
+  # equatable:
+  # fast_immutable_collections:
+  # ferry:
+  # ffi:
+  # file_picker_desktop:
+  # filesize:
+  # flinq:
+  # fpdart:
+  # freezed_annotation:
+  # googleapis:
+  # gql_http_link:
+  # graphs:
+  # hive:
+  # http:
+  # image:
+  # js:
+  # kt_dart:
+  # mime:
+  # more:
+  # numeral:
+  # path:
+  # pdf:
+  # petitparser:
+  # pubspec_parse:
+  # qr:
+  # recase:
+  # sealed_annotations:
+  # stack:
+  # statemachine:
+  # supercharged_dart:
+  # time:
+  # toml:
+  # tuple:
+  # typed_data:
+  # universal_io:
+  # uuid:
+  # vector_math:
+  # weak_map:
+  # yaml:
+
+dev_dependencies: {}
+  # build_runner:
+  # copy_with_extension_gen:
+  # dependency_validator:
+  # ferry_generator:
+  # freezed:
+  # hive_generator:
+  # json_serializable:
+  # sealed_generators:
