@@ -6,15 +6,12 @@ typedef Point = (int x, int y);
 typedef Range = (int low, int high);
 typedef Range2d = (Point low, Point high, Point increment);
 
-extension ArithmeticPoint on Point {
+extension on Point {
   int get x => $0;
   int get y => $1;
-
-  Point operator +(Point other) => (x + other.x, y + other.y);
-  Point operator -(Point other) => (x - other.x, y - other.y);
 }
 
-extension PointMethods on Point {
+extension on Point {
   (Point, Point)? extrema(int distance, int level) {
     if (this case (int x, int y)) {
       if ((level - y).abs() case int ry && <= distance) {
@@ -26,13 +23,13 @@ extension PointMethods on Point {
   }
 }
 
-extension MatchGroupExtension on Match {
+extension on Match {
   List<String> get matches => groups([for (int i = 1; i <= groupCount; ++i) i])
       .whereType<String>()
       .toList();
 }
 
-extension RangeMethods on Range {
+extension on Range {
   int get high => $1;
   int get low => $0;
 
@@ -57,20 +54,14 @@ extension RangeMethods on Range {
       if (right.length > 0) right,
     };
   }
-
-  Iterable<int> iterable() sync* {
-    for (int i = low; i <= high; ++i) {
-      yield i;
-    }
-  }
 }
 
-extension IterableExtension on Iterable<Range> {
+extension on Iterable<Range> {
   Set<Range> subtract(Set<Range> right) => right
       .fold(this, (acc, now) => acc.expand((v) => v.subtract(now)))
       .toSet();
 
-  Set<Range> flatten([num max = double.infinity]) {
+  Set<Range> flatten() {
     List<Range> combinedRanges = toList();
 
     bool hasChanged = false;
@@ -102,8 +93,6 @@ extension IterableExtension on Iterable<Range> {
 
     return combinedRanges.toSet();
   }
-
-  Set<Range> operator -(Set<Range> right) => subtract(right);
 }
 
 List<Data> parseData(String name) {
