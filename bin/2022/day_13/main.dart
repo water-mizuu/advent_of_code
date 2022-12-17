@@ -1,5 +1,7 @@
 import "dart:io";
 
+typedef Result<R> = (R? value, String? error);
+
 /// The beauty of pattern matching.
 /// It literally matches the spec.
 bool? compare(Object left, Object right) {
@@ -19,10 +21,7 @@ bool? compare(Object left, Object right) {
       }
     }
 
-    if (left.length == right.length) {
-      return null;
-    }
-    return left.length < right.length;
+    return compare(left.length, right.length);
   } else if (pair case (List<Object> left, int right)) {
     return compare(left, [right]);
   } else if (pair case (int left, List<Object> right)) {
@@ -35,15 +34,15 @@ bool? compare(Object left, Object right) {
 ///
 /// This is also like a parser-combinator thing but made by hand,
 /// which is itself a variant of recursive descent.
-(Object parsed, int index)? _parse(String input, [int i = 0]) {
+Result<(Object parsed, int index)> _parse(String input, [int i = 0]) {
   if (input[i] == "[") {
     if (i + 1 case int i) {
       List<Object> objects = [];
 
       while (i < input.length - 1 && input[i] != "]") {
-        if (_parse(input, i) case (Object element, int index)) {
+        if (_parse(input, i) case ((Object element, int _i), null)) {
           objects.add(element);
-          i = index;
+          i = _i;
         } else {
           break;
         }
@@ -54,18 +53,28 @@ bool? compare(Object left, Object right) {
       }
 
       if (input[i] == "]") {
-        return (objects, i + 1);
+        return ((objects, i + 1), null);
       }
+      return (null, "Expected a closing delimiter at $i");
     }
   } else if (RegExp(r"\d+").matchAsPrefix(input, i)?.group(0) case String span) {
-    return (int.parse(span), i + span.length);
+    return ((int.parse(span), i + span.length), null);
+  } else {
+    return (null, "Unexpected token ${input[i]}");
   }
 }
-Object? parse(String input) {
-  if (_parse(input) case (Object value, _)) {
-    return value;
+Result<Object> parse(String input) {
+  Result<(Object parsed, int index)> parsed = _parse(input);
+
+  if (parsed case (null, String error)) {
+    return parsed;
   }
-  return null;
+
+  if (parsed case ((Object value, _), null)) {
+    return (value, null);
+  }
+
+  return (null, "Unexpected result");
 }
 
 void part1() {
@@ -76,17 +85,23 @@ void part1() {
   for (String line in lines) {
     if (line.isNotEmpty) {
       pair.add(line);
-    } else if ((parse(pair[0]), parse(pair[1])) case (Object left, Object right)) {
-      pairs.add((left, right));
-      pair.clear();
+    } else {
+      if (parse(pair[0]) case (Object left, null)) {
+        if (parse(pair[1]) case (Object right, null)) {
+          pairs.add((left, right));
+          pair.clear();
+        }
+      }
     }
   }
   /// This, or rather, the lack of this block, costed me 30 minutes of
   /// wondering why my output was wrong. Because I didn't include the last
   /// pair.
-  if ((parse(pair[0]), parse(pair[1])) case (Object left, Object right)) {
-    pairs.add((left, right));
-    pair.clear();
+  if (parse(pair[0]) case (Object left, null)) {
+    if (parse(pair[1]) case (Object right, null)) {
+      pairs.add((left, right));
+      pair.clear();
+    }
   }
 
   int sum = 0;
@@ -105,8 +120,8 @@ void part1() {
 void part2() {
   /// The inputs are supposed to be [[2]] and [[6]],
   /// but it's all the same in the end.
-  const int left = 2;
-  const int right = 6;
+  const List<List<int>> left = [[2]];
+  const List<List<int>> right = [[6]];
 
   List<String> lines = File("bin/2022/day_13/assets/main.txt")
       .readAsLinesSync()
@@ -115,15 +130,23 @@ void part2() {
 
   List<Object> packets = [left, right];
   for (String line in lines) {
-    if (parse(line) case Object parsed) {
+    if (parse(line) case (Object parsed, null)) {
       packets.add(parsed);
     }
   }
 
-  /// There is most likely a more efficient way to do this,
-  /// but I like following the script.
-  packets.sort((left, right) => compare(left, right) ?? true ? -1 : 1);
-  int decoderKey = (packets.indexOf(left) + 1) * (packets.indexOf(right) + 1);
+  int leftIndex = 1;
+  int rightIndex = 1;
+  for (int i = 0; i < packets.length; ++i) {
+    if (compare(left, packets[i]) case false) {
+      ++leftIndex;
+    }
+    if (compare(right, packets[i]) case false) {
+      ++rightIndex;
+    }
+  }
+
+  int decoderKey = leftIndex*rightIndex;
 
   print(decoderKey);
 }
@@ -131,4 +154,14 @@ void part2() {
 void main() {
   part1();
   part2();
+
+  (String? v1, int? v2) values = (null, 3);
+  switch (values) {
+    case (String v, null):
+      print(v);
+      break;
+    case (null, int v):
+      print(v);
+      break;
+  }
 }
