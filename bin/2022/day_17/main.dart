@@ -68,25 +68,16 @@ bool collides(List2<String> grid, List2<String> rock, Point location, Point dire
     return true;
   }
 
-  for (int gy = 0; gy < grid.length; ++gy) {
-    /// Converting between y-inversed grid and y-normal rock
-    /// was a struggle. It turned out to be clean in the end though.
-    int ry = y - gy; /// The [r]ock [y]
 
-    if (ry < 0 || ry >= rock.length) {
-      /// Ignore if [ry] is beyond the rock boundaries.
-      continue;
-    }
-    for (int gx = 0; gx < grid[gy].length; ++gx) {
+  for (int gy = y; gy >= y - (rock.length - 1); --gy) {
+    for (int gx = x; gx < x + rock[0].length; ++gx) {
+      /// Converting between y-inversed grid and y-normal rock
+      /// was a struggle. It turned out to be clean in the end though.
+      int ry = y - gy; /// The [r]ock [y]
       int rx = gx - x; /// The [r]ock [x]
 
-      if (rx < 0 || rx >= rock[ry].length) {
-        /// Ignore if [rx] is beyond the rock boundaries.
-        continue;
-      }
-
       if (rock[ry][rx] != " " && grid[gy][gx] != " ") {
-        /// Check if both blocks aren't empty.
+        /// Check if the grid is writable.
         return true;
       }
     }
@@ -154,21 +145,10 @@ void part1() {
 
     highest = math.max(highest, y + 1);
 
-    for (int gy = 0; gy < grid.length; ++gy) {
-      int ry = y - gy; /// The [r]ock [y]
-
-      if (ry < 0 || ry >= rock.length) {
-        /// Ignore if [ry] is beyond the rock boundaries.
-        continue;
-      }
-
-      for (int gx = 0; gx < grid[gy].length; ++gx) {
+    for (int gy = y; gy >= y - (rock.length - 1); --gy) {
+      for (int gx = x; gx < x + rock[0].length; ++gx) {
+        int ry = y - gy; /// The [r]ock [y]
         int rx = gx - x; /// The [r]ock [x]
-
-        if (rx < 0 || rx >= rock[ry].length) {
-          /// Ignore if [rx] is beyond the rock boundaries.
-          continue;
-        }
 
         if (rock[ry][rx] != " " && grid[gy][gx] == " ") {
           /// Check if the grid is writable.
@@ -316,21 +296,10 @@ void part2() {
 
       highest = math.max(highest, y + 1);
 
-      for (int gy = 0; gy < grid.length; ++gy) {
-        int ry = y - gy; /// The [r]ock [y]
-
-        if (ry < 0 || ry >= rock.length) {
-          /// Ignore if [ry] is beyond the rock boundaries.
-          continue;
-        }
-
-        for (int gx = 0; gx < grid[gy].length; ++gx) {
+      for (int gy = y; gy >= y - (rock.length - 1); --gy) {
+        for (int gx = x; gx < x + rock[0].length; ++gx) {
+          int ry = y - gy; /// The [r]ock [y]
           int rx = gx - x; /// The [r]ock [x]
-
-          if (rx < 0 || rx >= rock[ry].length) {
-            /// Ignore if [rx] is beyond the rock boundaries.
-            continue;
-          }
 
           if (rock[ry][rx] != " " && grid[gy][gx] == " ") {
             /// Check if the grid is writable.
