@@ -71,21 +71,17 @@ void part2() {
   Point3 start = (min, min, min);
 
   /// Prepping a breadth first search.
-  Queue<Point3> queue = Queue<Point3>()
-    ..addLast(start);
+  Queue<Point3> queue = Queue<Point3>()..addLast(start);
+  Set<Point3> seen = HashSet()..add(start);
 
-  /// We only save points that we've seen coming from
-  ///   a specific direction.
-  ///
-  /// This is important as we may see a cube twice,
-  ///   but from a different direction.
-  //    □ 🡓
-  ///   □ □ ← (Seeing this block from three directions is okay.)
-  ///   □ 🡑
-  Set<(Point3, Point3)> seen = HashSet()
-    ..add(((0, 0, 0), start));
+  /// Set of points that represent the direct
+  ///   outer layer of the structure.
+  Set<Point3> outerLayer = HashSet();
 
-  int sum = 0;
+  /// Set of points that represent the direct
+  ///   inner layer of the structure.
+  Set<Point3> innerLayer = HashSet();
+
   while (queue.isNotEmpty) {
     Point3 point = queue.removeFirst();
 
@@ -93,25 +89,37 @@ void part2() {
       if (point + offset case Point3 neighbor && (int x, int y, int z)) {
         /// If we're beyond the bounds of the search,
         ///   ignore this nonexistent "neighbor".
-        if (x < min || x > max || y < min || y > max || z < min || z > max) {
+        if ((x < min || x > max) || (y < min || y > max) || (z < min || z > max)) {
           continue;
         }
 
-        if (seen.add((offset, neighbor))) {
-          /// If we haven't seen this cube from
-          ///   this direction yet, then process.
-          if (points.contains(neighbor)) {
-            /// If this is a cube in the given set,
-            ///   then add its surface.
-            sum += 1;
-          } else {
-            /// Enqueue the three-dimensional neighbor.
-            queue.addLast(neighbor);
-          }
+        if (points.contains(neighbor)) {
+          /// If neighbor is a magma cube, then we
+          ///   add the point to the outer set.
+          outerLayer.add(point);
+          /// Also, add the neighbor to the
+          ///   inner set.
+          innerLayer.add(neighbor);
+        } else if (seen.add(neighbor)) {
+          /// Since it isn't enqueue the cube
+          ///   if it isn't seen before.
+          queue.addLast(neighbor);
         }
       }
     }
   }
+
+  int sum = 0;
+  for (Point3 point in innerLayer) {
+    /// The visible surfaces are the ones without a direct neighbor.
+    /// So we count those.
+    int surface = offsets
+        .where((d) => outerLayer.contains(point + d))
+        .length;
+
+    sum += surface;
+  }
+
   print(sum);
 }
 
