@@ -10,7 +10,6 @@ extension on Point3 {
   int get z => $2;
 
   Point3 operator +(Point3 other) => (x + other.x, y + other.y, z + other.z);
-  // Point3 operator -(Point3 other) => (x - other.x, y - other.y, z - other.z);
 }
 
 void part1() {
@@ -31,6 +30,8 @@ void part1() {
 
   int sum = 0;
   for (Point3 point in points) {
+    /// The visible surfaces are the ones without a direct neighbor.
+    /// So we count those.
     int surface = offsets
         .where((d) => !points.contains(point + d))
         .length;
