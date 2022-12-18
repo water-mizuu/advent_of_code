@@ -23,10 +23,10 @@ void part1() {
   };
 
   Set<Point3> points = File("bin/2022/day_18/assets/main.txt")
-    .readAsLinesSync()
-    .map((l) => l.split(",").map(int.parse).toList())
-    .map((v) => (v[0], v[1], v[2]))
-    .toSet();
+      .readAsLinesSync()
+      .map((l) => l.split(",").map(int.parse).toList())
+      .map((v) => (v[0], v[1], v[2]))
+      .toSet();
 
   int sum = 0;
   for (Point3 point in points) {
@@ -53,10 +53,10 @@ void part2() {
   };
 
   Set<Point3> points = File("bin/2022/day_18/assets/main.txt")
-    .readAsLinesSync()
-    .map((l) => l.split(",").map(int.parse).toList())
-    .map((v) => (v[0], v[1], v[2]))
-    .toSet();
+      .readAsLinesSync()
+      .map((l) => l.split(",").map(int.parse).toList())
+      .map((v) => (v[0], v[1], v[2]))
+      .toSet();
 
   /// Find the leftmost possible surface.
   int min = points
