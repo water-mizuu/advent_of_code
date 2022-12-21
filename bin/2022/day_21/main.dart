@@ -71,12 +71,12 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
     ///   Depth first search, because we want to start at the roots.
     if (stack.removeFirst() case (String name, Definition definition)) {
       queue.addFirst(name);
-      if (definition case ((String() && Object l, String op, String() && Object r), null)) {
-        if ((l, environment[l]) case (String l, Definition definition)) {
+      if (definition case ((String l, String op, String r), null)) {
+        if (environment[l] case Definition definition) {
           parentConnection[l] = (name, -1);
           stack.addLast((l, definition));
         }
-        if ((r, environment[r]) case (String r, Definition definition)) {
+        if (environment[r] case Definition definition) {
           parentConnection[r] = (name, 1);
           stack.addLast((r, definition));
         }
@@ -86,7 +86,8 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
 
   /// Now, our queue will have the following characteristic:
   ///   The item at [k] is dependent on items exclusively on or before [k - 1].
-  ///   Therefore, we can do some mutation while iteration.
+  ///   Therefore, we can do some mutation while iteration, and we can be sure
+  ///   that the environment gets reduced.
   for (String name in queue) {
     if (environment[name] case (null, num value)) {
       /// Destructure the connection.
