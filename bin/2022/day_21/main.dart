@@ -49,12 +49,10 @@ num evaluate(Definition definition, Map<String, Definition> environment) {
 
 void part1() {
   List<String> lines = File("bin/2022/day_21/assets/main.txt").readAsLinesSync();
-  Map<String, Definition> environment = Map.fromEntries(
-    lines //
-          .map((v) => parse(v))
-          .whereType<(String, Definition)>()
-          .map((v) => MapEntry(v.$0, v.$1))
-  );
+  Map<String, Definition> environment = {
+    for ((String, Definition) line in lines.map(parse).whereType<(String, Definition)>())
+      line.$0: line.$1
+  };
 
   print(evaluate(environment["root"]!, environment));
 }
@@ -68,7 +66,7 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
   /// We get the queue... In order?
   while (stack.isNotEmpty) {
     /// We traverse through the tree, adding it to a queue.
-    ///   Depth first search, because we want to start at the roots.
+    ///   Breadth first search, because we want to start at the roots.
     if (stack.removeFirst() case (String name, Definition definition)) {
       queue.addFirst(name);
       if (definition case ((String l, String op, String r), null)) {
@@ -172,12 +170,10 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
 ///   Run evaluate on the inverse environment.
 void part2() {
   List<String> lines = File("bin/2022/day_21/assets/main.txt").readAsLinesSync();
-  Map<String, Definition> environment = Map.fromEntries(
-    lines //
-          .map((v) => parse(v))
-          .whereType<(String, Definition)>()
-          .map((v) => MapEntry(v.$0, v.$1))
-  );
+  Map<String, Definition> environment = {
+    for ((String, Definition) line in lines.map(parse).whereType<(String, Definition)>())
+      line.$0: line.$1
+  };
   environment.remove("humn");
 
   Map<String, Definition> inverse = generateInverse("root", environment);
