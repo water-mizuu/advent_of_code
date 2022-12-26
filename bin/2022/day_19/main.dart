@@ -255,19 +255,8 @@ void part2() {
 
   print(sum);
 }
-void part3() {
-  Blueprint bp = File("bin/2022/day_19/assets/test.txt")
-      .readAsLinesSync()
-      .map(parseLine)
-      .skip(1)
-      .first;
-
-  int geodes = tryBlueprint(bp, 24);
-  print("${bp.id} = $geodes");
-}
 
 void main() {
-  // part1();
-  // part2();
-  part3();
+  part1();
+  part2();
 }
