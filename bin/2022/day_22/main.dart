@@ -60,9 +60,6 @@ void part1() {
       maxY[x] = y;
 
       Point point = (x, y);
-      switch (character) {
-        case const "#": break;
-      }
       if (character == "#") {
         map[point] = false;
       } else if (character == ".") {
@@ -154,6 +151,7 @@ void part2() {
           if (character.trim().isEmpty) {
             continue;
           }
+
           Point point = (x, y);
           if (character == "#") {
             segmentContainer[point] = false;
@@ -224,8 +222,7 @@ void part2() {
                         : newDirectionIndex == 2 ? (length - 1, newPosition.y)
                         : newDirectionIndex == 3 ? (newPosition.x, length - 1)
                         : throw Exception();
-            // ignore: unnecessary_null_checks
-            valid = segments[faceSegment[newFace]]![newPosition]!;
+            valid = segments[faceSegment[newFace]]![newPosition];
           }
 
           if (valid case bool valid) {
