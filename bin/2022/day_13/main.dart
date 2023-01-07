@@ -77,6 +77,10 @@ Result<Object> parse(String input) {
 
 void part1() {
   List<String> lines = File("bin/2022/day_13/assets/main.txt").readAsLinesSync();
+  /// This, or rather, the lack of this linej, costed me 30 minutes of
+  /// wondering why my output was wrong. Because I didn't include the last
+  /// pair.
+  lines.add("");
 
   List<(Object, Object)> pairs = [];
   List<String> pair = [];
@@ -87,15 +91,6 @@ void part1() {
       var (left as Object , _) = parse(pair[0]);
       var (right as Object, _) = parse(pair[1]);
 
-      pairs.add((left, right));
-      pair.clear();
-    }
-  }
-  /// This, or rather, the lack of this block, costed me 30 minutes of
-  /// wondering why my output was wrong. Because I didn't include the last
-  /// pair.
-  if (parse(pair[0]) case (Object left, null)) {
-    if (parse(pair[1]) case (Object right, null)) {
       pairs.add((left, right));
       pair.clear();
     }
