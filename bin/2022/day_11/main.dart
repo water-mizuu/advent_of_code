@@ -138,25 +138,19 @@ abstract class Parser {
 
   static int? parseTest(String line) {
     if (RegExp(r"Test: divisible by (\d+)").firstMatch(line)?.group(1) case String number) {
-      if (int.tryParse(number) case int divisor) {
-        return divisor;
-      }
+      return int.tryParse(number);
     }
   }
 
   static int? parseIfTrue(String line) {
     if (RegExp(r"If true: throw to monkey (\d+)").firstMatch(line)?.group(1) case String number) {
-      if (int.tryParse(number) case int id) {
-        return id;
-      }
+      return int.tryParse(number);
     }
   }
 
   static int? parseIfFalse(String line) {
     if (RegExp(r"If false: throw to monkey (\d+)").firstMatch(line)?.group(1) case String number) {
-      if (int.tryParse(number) case int id) {
-        return id;
-      }
+      return int.tryParse(number);
     }
   }
 

@@ -7,20 +7,20 @@ Iterable<Point> generatePath(List<Point> points) sync* {
   for (int i = 0; i < points.length - 1; ++i) {
     /// Destructure the current point `point[i]`
     ///   and the subsequent next point `point[i + 1]`
-    if ((points[i], points[i + 1]) case ((int fx, int fy), (int tx, int ty))) {
-      /// Declare `dx` as the constrained difference of `fx` and `tx`,
-      ///   and only execute the loop if it is not 0.
-      if ((tx - fx).sign case int dx && != 0) {
-        /// Start from `fx`, up to one above `tx`
-        for (int x = fx; x != tx + dx; x += dx) {
-          yield (x, fy);
-        }
+    var (int fx, int fy) = points[i];
+    var (int tx, int ty) = points[i + 1];
+    /// Declare `dx` as the constrained difference of `fx` and `tx`,
+    ///   and only execute the loop if it is not 0.
+    if ((tx - fx).sign case int dx && != 0) {
+      /// Start from `fx`, up to one above `tx`
+      for (int x = fx; x != tx + dx; x += dx) {
+        yield (x, fy);
       }
-      /// Same logic as `dx`, but this time in `dy`.
-      if ((ty - fy).sign case int dy && != 0) {
-        for (int y = fy; y != ty + dy; y += dy) {
-          yield (fx, y);
-        }
+    }
+    /// Same logic as `dx`, but this time in `dy`.
+    if ((ty - fy).sign case int dy && != 0) {
+      for (int y = fy; y != ty + dy; y += dy) {
+        yield (fx, y);
       }
     }
   }
@@ -71,22 +71,21 @@ void part1() {
 
       /// Iterate through each offset, [-1, 1] × [1, 1]
       for (Point point in offset) {
-        if (point case (int dx, int dy)) {
-          /// If the potential move is already stored,
-          /// then ignore it and move to the next.
-          if (particles.contains((x + dx, y + dy))) {
-            continue;
-          }
-
-          moved = true;
-
-          y += dy;
-          x += dx;
-
-          /// Since we finally found a valid move,
-          /// break out of the loop.
-          break;
+        var (int dx, int dy) = point;
+        /// If the potential move is already stored,
+        /// then ignore it and move to the next.
+        if (particles.contains((x + dx, y + dy))) {
+          continue;
         }
+
+        moved = true;
+
+        y += dy;
+        x += dx;
+
+        /// Since we finally found a valid move,
+        /// break out of the loop.
+        break;
       }
     } while (moved);
 
@@ -140,22 +139,21 @@ void part2() {
 
       /// Iterate through each offset, [-1, 1] × [1, 1]
       for (Point point in offset) {
-        if (point case (int dx, int dy)) {
-          /// If the potential move is already stored,
-          /// then ignore it and move to the next.
-          if (particles.contains((x + dx, y + dy))) {
-            continue;
-          }
-
-          moved = true;
-
-          y += dy;
-          x += dx;
-
-          /// Since we finally found a valid move,
-          /// break out of the loop.
-          break;
+        var (int dx, int dy) = point;
+        /// If the potential move is already stored,
+        /// then ignore it and move to the next.
+        if (particles.contains((x + dx, y + dy))) {
+          continue;
         }
+
+        moved = true;
+
+        y += dy;
+        x += dx;
+
+        /// Since we finally found a valid move,
+        /// break out of the loop.
+        break;
       }
     } while (moved);
 

@@ -20,7 +20,7 @@ class Entity {
         type = EntityType.directory;
   Entity.file({required this.name, required this.size})
       : children = [],
-        type = EntityType.directory;
+        type = EntityType.file;
 
   Iterable<Entity> traverse() sync* {
     Queue<Entity> queue = Queue<Entity>()..add(this);
@@ -42,10 +42,11 @@ class Entity {
     expando ??= Expando<int>();
 
     switch (type) {
-      case EntityType.file:
+      case const EntityType.file:
         return expando[this] = size;
-      case EntityType.directory:
+      case const EntityType.directory:
         expando[this] ??= 0;
+
         return expando[this] = children
             .map((c) => c.computeSize(expando: expando))
             .reduce((a, b) => a + b);
@@ -77,11 +78,7 @@ Entity parseCommands(List<String> lines) {
     if (matchCommand(line) case List<String?> match) {
       if (match case ["cd", ".."]) {
         stack.removeLast();
-
-        continue;
-      }
-
-      if (match case ["cd", String args]) {
+      } else if (match case ["cd", String args]) {
         if (stack.isNotEmpty) {
           Entity entity = stack.last.children
               .firstWhere((e) => e.name == args, orElse: () => Entity.directory(name: args));
@@ -126,11 +123,11 @@ Entity parseCommands(List<String> lines) {
 /// 2. Traverse the directories.
 /// 3. Simple filter & sum.
 void part1() {
-  List<String> lines = File("bin/2022/day_7/assets/test.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_7/assets/main.txt").readAsLinesSync();
   Entity root = parseCommands(lines);
   displayEntity(root);
 
-  int query = (root.traverse())
+  int query = root.traverse()
       .where((e) => e.type == EntityType.directory)
       .map((e) => e.computeSize())
       .where((sz) => sz <= 100000)
@@ -148,7 +145,7 @@ void part2() {
   int totalSize = root.computeSize();
   int target = totalSize - 40000000;
 
-  int query = (root.traverse())
+  int query = root.traverse()
       .where((e) => e.type == EntityType.directory)
       .map((e) => e.computeSize())
       .where((sz) => sz >= target)

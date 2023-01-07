@@ -22,26 +22,24 @@ Table validTransitions(List2<int> grid) {
       List<Point> next = table[(x, y)] = [];
 
       for (Point offset in offsets) {
-        /// I wonder when functional destructuring will come?
-        if (offset case (int dx, int dy)) {
-          /// Coordinates of the neighbor.
-          int nx = x + dx;
-          int ny = y + dy;
+        var (int dx, int dy) = offset;
+        /// Coordinates of the neighbor.
+        int nx = x + dx;
+        int ny = y + dy;
 
-          /// If the coordinates are outside the grid,
-          if (nx case < 0 || >= grid[y].length) {
-            continue;
-          }
-          if (ny case < 0 || >= grid.length) {
-            continue;
-          }
-          /// or if it's too high up, then ignore it.
-          if (grid[ny][nx] - grid[y][x] > 1) {
-            continue;
-          }
-
-          next.add((nx, ny));
+        /// If the coordinates are outside the grid,
+        if (nx < 0 || nx >= grid[y].length) {
+          continue;
         }
+        if (ny < 0 || ny >= grid.length) {
+          continue;
+        }
+        /// or if it's too high up, then ignore it.
+        if (grid[ny][nx] - grid[y][x] > 1) {
+          continue;
+        }
+
+        next.add((nx, ny));
       }
     }
   }
@@ -60,27 +58,24 @@ Iterable<int> solve(List<Point> start, Point target, Table transitions) sync* {
   }
 
   while (queue.isNotEmpty) {
-    if (queue.removeFirst() case (Point point, int length)) {
-      if (!seen.add(point)) {
-        continue;
-      }
+    var (Point point, int length) = queue.removeFirst();
+    if (!seen.add(point)) {
+      continue;
+    }
 
-      /// If one wonders why this is in an if-statement,
-      /// it's because `transition[point]` is nullable.
-      if (transitions[point] case List<Point> next) {
-        for (Point transition in next) {
-          /// If we've found a path to the target, then yield.
-          /// But continue.
-          if (transition == target) {
-            yield length;
-          } else {
-            queue.add((transition, length + 1));
-          }
-        }
+    List<Point> next = transitions[point] ?? [];
+    for (Point transition in next) {
+      /// If we've found a path to the target, then yield.
+      /// But continue.
+      if (transition == target) {
+        yield length;
+      } else {
+        queue.add((transition, length + 1));
       }
     }
   }
   /// So much brackets. I hope working irrefutable patterns come soon
+  ///   2023/01/02: It's here!
 }
 
 // Basically a maze.

@@ -10,17 +10,16 @@ void part1() {
 
   int totalScore = 0;
   for (String line in lines) {
-    if (line.split(" ") case [String left, String right]) {
-      int scoreLeft = scores[left] ?? 0;
-      int scoreRight = scores[right] ?? 0;
+    var [String left, String right] = line.split(" ");
+    int scoreLeft = scores[left] ?? 0;
+    int scoreRight = scores[right] ?? 0;
 
-      int result = (scoreLeft - scoreRight) % 3;
-      bool win = result == 2;
-      bool draw = result == 0;
+    int result = (scoreLeft - scoreRight) % 3;
+    bool win = result == 2;
+    bool draw = result == 0;
 
-      int resultingScore = win ? 6 : draw ? 3 : 0;
-      totalScore += resultingScore + scoreRight;
-    }
+    int resultingScore = win ? 6 : draw ? 3 : 0;
+    totalScore += resultingScore + scoreRight;
   }
   print(totalScore);
 }
@@ -40,15 +39,14 @@ void part2() {
 
   int totalScore = 0;
   for (String line in lines) {
-    if (line.split(" ") case [String left, String right]) {
-      int shift = shifts[right] ?? 0;
-      int decidedScore = (shift + 1) * 3; // X = 0, Y = 3, Z = 6
+    var [String left, String right] = line.split(" ");
+    int shift = shifts[right] ?? 0;
+    int decidedScore = (shift + 1) * 3; // X = 0, Y = 3, Z = 6
 
-      int scoreLeft = scores[left] ?? 0;
-      int scoreRight = (scoreLeft + shift - 1) % 3 + 1;
+    int scoreLeft = scores[left] ?? 0;
+    int scoreRight = (scoreLeft + shift - 1) % 3 + 1;
 
-      totalScore += decidedScore + scoreRight;
-    }
+    totalScore += decidedScore + scoreRight;
   }
 
   print(totalScore);

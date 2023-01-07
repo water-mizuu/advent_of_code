@@ -14,7 +14,7 @@ extension on Point {
 extension on Point {
   (Point, Point)? extrema(int distance, int level) {
     if (this case (int x, int y)) {
-      if ((level - y).abs() case int ry && <= distance) {
+      if ((level - y).abs() case int ry when ry <= distance) {
         int dx = distance - ry;
 
         return ((x - dx, level), (x + dx, level));
@@ -30,8 +30,8 @@ extension on Match {
 }
 
 extension on Range {
-  int get high => $1;
   int get low => $0;
+  int get high => $1;
 
   int get length => high - low + 1;
 
@@ -103,9 +103,9 @@ List<Data> parseData(String name) {
 
   for (String line in lines) {
     if (parser.firstMatch(line)?.matches case List<String> results) {
-      if (results.map(int.tryParse).toList() case [int sx, int sy, int bx, int by])  {
-        data.add(((sx, sy), (bx, by)));
-      }
+      var [int sx, int sy, int bx, int by] = results.map(int.parse).toList();
+
+      data.add(((sx, sy), (bx, by)));
     }
   }
 
@@ -113,9 +113,10 @@ List<Data> parseData(String name) {
 }
 
 int manhattanDistance(Point a, Point b) {
-  if ((a, b) case ((int ax, int ay), (int bx, int by))) {
-    return (ax - bx).abs() + (ay - by).abs();
-  }
+  var (int ax, int ay) = a;
+  var (int bx, int by) = b;
+
+  return (ax - bx).abs() + (ay - by).abs();
 }
 
 /// NOTES:

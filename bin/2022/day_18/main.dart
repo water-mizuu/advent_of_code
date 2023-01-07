@@ -86,12 +86,10 @@ void part2() {
     Point3 point = queue.removeFirst();
 
     for (Point3 offset in offsets) {
-      if (point + offset case Point3 neighbor && (int x, int y, int z)) {
+      if (point + offset case Point3 neighbor && (int x, int y, int z) 
+          when {x, y, z}.every((v) => min <= v && v <= max)) {
         /// If we're beyond the bounds of the search,
         ///   ignore this nonexistent "neighbor".
-        if ((x < min || x > max) || (y < min || y > max) || (z < min || z > max)) {
-          continue;
-        }
 
         if (points.contains(neighbor)) {
           /// If neighbor is a magma cube, then we

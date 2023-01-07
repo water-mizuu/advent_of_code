@@ -167,16 +167,12 @@ List<int> relativePositions(List2<String> grid, int highest) {
   List<int> distances = [ for (int x = 0; x < rowLength; ++x) 0 ];
 
   for (int y = highest - 1; y >= 0; --y) {
-    Set<int> toRemove = {};
-
-    for (int x in xs) {
+    for (int x in {...xs}) {
       if (grid[y][x] != " ") {
-        toRemove.add(x);
+        xs.remove(x);
         distances[x] = highest - 1 - y;
       }
     }
-
-    xs.removeAll(toRemove);
   }
 
   return distances;
@@ -241,19 +237,18 @@ void part2() {
       ///   the cycle does not start immediately, so we have to account for that.
       int excess = cacheLength - cycleSize;
 
-      if ((rockCount - excess).divmod(cycleSize) case (int quo, int rem)) {
-        /// This is the tail part. If we removed the excess and a
-        ///   whole number multiple of the cycle, we're left with
-        ///   a part of the cycle that ends somewhere in the middle.
-        int remaining = cache.values.elementAt(excess + rem) - first;
+      var (int quo, int rem) = (rockCount - excess).divmod(cycleSize);
+      /// This is the tail part. If we removed the excess and a
+      ///   whole number multiple of the cycle, we're left with
+      ///   a part of the cycle that ends somewhere in the middle.
+      int remaining = cache.values.elementAt(excess + rem) - first;
 
-        /// And finally, put it all together.
-        int calculated  = cycleHeight * quo + first + remaining - 1;
+      /// And finally, put it all together.
+      int calculated  = cycleHeight * quo + first + remaining - 1;
 
-        highest = calculated;
+      highest = calculated;
 
-        break;
-      }
+      break;
     } else {
       cache[key] = highest;
 

@@ -64,7 +64,7 @@ void part2() {
     /// If the current clock is within the window of the register,
     /// Then draw it as lit.
 
-    if (c % 40 case == x - 1 || == x || == x + 1) {
+    if ({x - 1, x, x + 1}.contains(c % 40)) {
       buffer.write("█");
     } else {
       buffer.write(" ");

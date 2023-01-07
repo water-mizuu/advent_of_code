@@ -75,7 +75,7 @@ int dfs(Graph graph, List2<int> distances, int current, List<int> remaining, int
   int result = 0;
   for (Cons<int> selected in remaining.chooseOne()) {
     if (selected case (int pipe, List<int> otherPipes)) {
-      if (distances[current][pipe] case int distance && <= timeLimit) {
+      if (distances[current][pipe] case int distance when distance <= timeLimit) {
         if (graph[pipe] case (int rate, _)) {
           int limit = (timeLimit - distance) - 1;
           int flow = rate * limit + dfs(graph, distances, pipe, otherPipes, limit);
@@ -136,7 +136,7 @@ int dfs2(Graph graph, List2<int> distances, int start, int current, List<int> re
 
   for (Cons<int> pair in remaining.chooseOne()) {
     if (pair case (int r, List<int> rr)) {
-      if (distances[current][r] case int distance && <= timeLimit) {
+      if (distances[current][r] case int distance when distance <= timeLimit) {
         if (graph[r] case (int rate, _)) {
           int limit = (timeLimit - distance) - 1;
           int flow = rate * limit + dfs2(graph, distances, start, r, rr, limit);

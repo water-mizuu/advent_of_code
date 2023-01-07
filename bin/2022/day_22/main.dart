@@ -28,7 +28,7 @@ const List<Point> directions = [
 ];
 
 void part1() {
-  String input = File("bin/2022/day_22/assets/test.txt").readAsStringSync().replaceAll("\r", "");
+  String input = File("bin/2022/day_22/assets/main.txt").readAsStringSync().replaceAll("\r", "");
 
   List<String> parts = input.split("\n\n");
   Iterable<RegExpMatch> matches = RegExp(r"(\d+)([RL]?)").allMatches(parts.last);
@@ -77,23 +77,22 @@ void part1() {
           Point direction = directions[directionIndex];
           Point next = position + direction;
 
-          if (map[next] case bool? valid) {
-            if (valid case null) {
-              next = direction == (1, 0) ? (minX[position.y]!, position.y)
-                   : direction == (0, 1) ? (position.x, minY[position.x]!)
-                   : direction == (-1, 0) ? (maxX[position.y]!, position.y)
-                   : direction == (0, -1) ? (position.x, maxY[position.x]!)
-                   : throw StateError("Unknown direction $direction");
-              valid = map[next];
+          bool? valid = map[next];
+          if (valid case null) {
+            next = direction == (1, 0) ? (minX[position.y]!, position.y)
+                  : direction == (0, 1) ? (position.x, minY[position.x]!)
+                  : direction == (-1, 0) ? (maxX[position.y]!, position.y)
+                  : direction == (0, -1) ? (position.x, maxY[position.x]!)
+                  : throw StateError("Unknown direction $direction");
+            valid = map[next];
+          }
+
+          if (valid case bool valid) {
+            if (!valid) {
+              break;
             }
 
-            if (valid case bool valid) {
-              if (!valid) {
-                break;
-              }
-
-              position = next;
-            }
+            position = next;
           }
         }
       } else if (instruction case String rotate) {
@@ -200,7 +199,7 @@ void part2() {
           int newDirectionIndex = directionIndex;
           Face newFace = face;
 
-          bool? valid = segments[faceSegment[face]!]![newPosition];
+          bool? valid = segments[faceSegment[face]!]?[newPosition];
           if (valid case null) {
             newFace = faceNeighbors[face]![(directionIndex - faceRotations[face]!) % 4];
             newPosition = position;

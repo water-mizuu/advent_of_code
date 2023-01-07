@@ -29,27 +29,6 @@ class Blueprint {
        maxObsidianCost = geodeRobotCost.obsidian;
 }
 
-const int oreRobot = 1 << 0;
-const int clayRobot = 1 << 1;
-const int obsidianRobot = 1 << 2;
-const int geodeRobot = 1 << 3;
-const int allRobots = oreRobot | clayRobot | obsidianRobot | geodeRobot;
-
-int tryBlueprint2(
-  Blueprint bp,
-  int time,
-  Map<Entry, int> cache, [
-  Resources goods = (ore: 0, clay: 0, obsidian: 0, geode: 0),
-  Resources robots = (ore: 0, clay: 0, obsidian: 0, geode: 0),
-  BitField availableRobots = allRobots,
-]) {
-  if (time == 0) {
-    return 0;
-  }
-
-  return 0;
-}
-
 int tryBlueprint(Blueprint bp, int time) {
   StringBuffer buffer = StringBuffer();
 
@@ -61,121 +40,120 @@ int tryBlueprint(Blueprint bp, int time) {
 
   int max = 0;
   while (queue.isNotEmpty) {
-    if (queue.removeFirst() case (int time, Resources goods, Resources robots)) {
-      max = math.max(max, goods.geode);
+    var (int time, Resources goods, Resources robots) = queue.removeFirst();
+    max = math.max(max, goods.geode);
 
-      if (time <= 0) {
-        continue;
-      }
+    if (time <= 0) {
+      continue;
+    }
 
-      Resources nextGoods = (
-        ore: math.min(goods.ore, (time * bp.maxOreCost) - (robots.ore * (time - 1))),
-        clay: math.min(goods.clay, (time * bp.obsidianRobotCost.clay) - (robots.clay * (time - 1))),
-        obsidian: math.min(goods.obsidian, (time * bp.geodeRobotCost.obsidian) - (robots.obsidian * (time - 1))),
-        geode: goods.geode,
-      );
-      Resources nextRobots = (
-        ore: math.min(robots.ore, bp.maxOreCost),
-        clay: math.min(robots.clay, bp.maxClayCost),
-        obsidian: math.min(robots.obsidian, bp.maxObsidianCost),
-        geode: robots.geode,
-      );
+    Resources nextGoods = (
+      ore: math.min(goods.ore, (time * bp.maxOreCost) - (robots.ore * (time - 1))),
+      clay: math.min(goods.clay, (time * bp.obsidianRobotCost.clay) - (robots.clay * (time - 1))),
+      obsidian: math.min(goods.obsidian, (time * bp.geodeRobotCost.obsidian) - (robots.obsidian * (time - 1))),
+      geode: goods.geode,
+    );
+    Resources nextRobots = (
+      ore: math.min(robots.ore, bp.maxOreCost),
+      clay: math.min(robots.clay, bp.maxClayCost),
+      obsidian: math.min(robots.obsidian, bp.maxObsidianCost),
+      geode: robots.geode,
+    );
 
-      /// Shadow them.
-      if ((nextGoods, nextRobots) case (Resources goods, Resources robots)) {
-        Entry entry = (time, goods, robots);
-        buffer.writeln(entry);
+    /// Shadow them.
+    if ((nextGoods, nextRobots) case (Resources goods, Resources robots)) {
+      Entry entry = (time, goods, robots);
+      buffer.writeln(entry);
 
-        if (seen.add(entry)) {
+      if (seen.add(entry)) {
+        queue.add((
+          time - 1,
+          (
+            ore: goods.ore + robots.ore,
+            clay: goods.clay + robots.clay,
+            obsidian: goods.obsidian + robots.obsidian,
+            geode: goods.geode + robots.geode,
+          ),
+          robots,
+        ));
+
+        /// Try buying one ore robot.
+        if (robots.ore < bp.maxOreCost && goods.ore >= bp.oreRobotCost) {
           queue.add((
             time - 1,
             (
-              ore: goods.ore + robots.ore,
+              ore: goods.ore + robots.ore - bp.oreRobotCost,
               clay: goods.clay + robots.clay,
               obsidian: goods.obsidian + robots.obsidian,
               geode: goods.geode + robots.geode,
             ),
-            robots,
+            (
+              ore: robots.ore + 1,
+              clay: robots.clay,
+              obsidian: robots.obsidian,
+              geode: robots.geode,
+            ),
           ));
+        }
 
-          /// Try buying one ore robot.
-          if (robots.ore < bp.maxOreCost && goods.ore >= bp.oreRobotCost) {
-            queue.add((
-              time - 1,
-              (
-                ore: goods.ore + robots.ore - bp.oreRobotCost,
-                clay: goods.clay + robots.clay,
-                obsidian: goods.obsidian + robots.obsidian,
-                geode: goods.geode + robots.geode,
-              ),
-              (
-                ore: robots.ore + 1,
-                clay: robots.clay,
-                obsidian: robots.obsidian,
-                geode: robots.geode,
-              ),
-            ));
-          }
+        /// Try buying one ore robot.
+        if (robots.clay < bp.maxClayCost && goods.ore >= bp.clayRobotCost) {
+          queue.add((
+            time - 1,
+            (
+              ore: goods.ore + robots.ore - bp.clayRobotCost,
+              clay: goods.clay + robots.clay,
+              obsidian: goods.obsidian + robots.obsidian,
+              geode: goods.geode + robots.geode,
+            ),
+            (
+              ore: robots.ore,
+              clay: robots.clay + 1,
+              obsidian: robots.obsidian,
+              geode: robots.geode,
+            ),
+          ));
+        }
 
-          /// Try buying one ore robot.
-          if (robots.clay < bp.maxClayCost && goods.ore >= bp.clayRobotCost) {
-            queue.add((
-              time - 1,
-              (
-                ore: goods.ore + robots.ore - bp.clayRobotCost,
-                clay: goods.clay + robots.clay,
-                obsidian: goods.obsidian + robots.obsidian,
-                geode: goods.geode + robots.geode,
-              ),
-              (
-                ore: robots.ore,
-                clay: robots.clay + 1,
-                obsidian: robots.obsidian,
-                geode: robots.geode,
-              ),
-            ));
-          }
+        /// Try buying one obsidian robot.
+        if (robots.obsidian < bp.maxObsidianCost &&
+            goods.ore >= bp.obsidianRobotCost.ore &&
+            goods.clay >= bp.obsidianRobotCost.clay) {
+          queue.add((
+            time - 1,
+            (
+              ore: goods.ore + robots.ore - bp.obsidianRobotCost.ore,
+              clay: goods.clay + robots.clay - bp.obsidianRobotCost.clay,
+              obsidian: goods.obsidian + robots.obsidian,
+              geode: goods.geode + robots.geode,
+            ),
+            (
+              ore: robots.ore,
+              clay: robots.clay,
+              obsidian: robots.obsidian + 1,
+              geode: robots.geode,
+            ),
+          ));
+        }
 
-          /// Try buying one obsidian robot.
-          if (robots.obsidian < bp.maxObsidianCost &&
-              goods.ore >= bp.obsidianRobotCost.ore &&
-              goods.clay >= bp.obsidianRobotCost.clay) {
-            queue.add((
-              time - 1,
-              (
-                ore: goods.ore + robots.ore - bp.obsidianRobotCost.ore,
-                clay: goods.clay + robots.clay - bp.obsidianRobotCost.clay,
-                obsidian: goods.obsidian + robots.obsidian,
-                geode: goods.geode + robots.geode,
-              ),
-              (
-                ore: robots.ore,
-                clay: robots.clay,
-                obsidian: robots.obsidian + 1,
-                geode: robots.geode,
-              ),
-            ));
-          }
-
-          /// Try buying one geode robot.
-          if (goods.ore >= bp.geodeRobotCost.ore &&
-              goods.obsidian >= bp.geodeRobotCost.obsidian) {
-            queue.add((
-              time - 1,
-              (
-                ore: goods.ore + robots.ore - bp.geodeRobotCost.ore,
-                clay: goods.clay + robots.clay,
-                obsidian: goods.obsidian + robots.obsidian - bp.geodeRobotCost.obsidian,
-                geode: goods.geode + robots.geode,
-              ),
-              (
-                ore: robots.ore,
-                clay: robots.clay,
-                obsidian: robots.obsidian,
-                geode: robots.geode + 1,
-              ),
-            ));
-          }
+        /// Try buying one geode robot.
+        if (goods.ore >= bp.geodeRobotCost.ore &&
+            goods.obsidian >= bp.geodeRobotCost.obsidian) {
+          queue.add((
+            time - 1,
+            (
+              ore: goods.ore + robots.ore - bp.geodeRobotCost.ore,
+              clay: goods.clay + robots.clay,
+              obsidian: goods.obsidian + robots.obsidian - bp.geodeRobotCost.obsidian,
+              geode: goods.geode + robots.geode,
+            ),
+            (
+              ore: robots.ore,
+              clay: robots.clay,
+              obsidian: robots.obsidian,
+              geode: robots.geode + 1,
+            ),
+          ));
         }
       }
     }

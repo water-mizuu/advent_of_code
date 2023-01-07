@@ -67,17 +67,16 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
   while (stack.isNotEmpty) {
     /// We traverse through the tree, adding it to a queue.
     ///   Breadth first search, because we want to start at the roots.
-    if (stack.removeFirst() case (String name, Definition definition)) {
-      queue.addFirst(name);
-      if (definition case ((String l, String op, String r), null)) {
-        if (environment[l] case Definition definition) {
-          parentConnection[l] = (name, -1);
-          stack.addLast((l, definition));
-        }
-        if (environment[r] case Definition definition) {
-          parentConnection[r] = (name, 1);
-          stack.addLast((r, definition));
-        }
+    var (String name, Definition definition) = stack.removeFirst();
+    queue.addFirst(name);
+    if (definition case ((String l, String op, String r), null)) {
+      if (environment[l] case Definition definition) {
+        parentConnection[l] = (name, -1);
+        stack.addLast((l, definition));
+      }
+      if (environment[r] case Definition definition) {
+        parentConnection[r] = (name, 1);
+        stack.addLast((r, definition));
       }
     }
   }
@@ -89,28 +88,26 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
   for (String name in queue) {
     if (environment[name] case (null, num value)) {
       /// Destructure the connection.
-      if (parentConnection[name] case (String parentName, int location)) {
-        if (environment[parentName] case ((Object left, String op, Object right), null)) {
-          /// -1 shows left, 1 shows right.
-          if (location case -1) {
-            environment[parentName] = ((value, op, right), null);
-          } else if (location case 1) {
-            environment[parentName] = ((left, op, value), null);
-          }
-          environment.remove(name);
+      var (String parentName, int location) = parentConnection[name]!;
+      if (environment[parentName] case ((Object left, String op, Object right), null)) {
+        /// -1 shows left, 1 shows right.
+        if (location case -1) {
+          environment[parentName] = ((value, op, right), null);
+        } else if (location case 1) {
+          environment[parentName] = ((left, op, value), null);
         }
+        environment.remove(name);
       }
     } else if (environment[name] case Definition definition && ((num left, String op, num right), null)) {
       /// Since we have an expression that we can evaluate,
       ///   then evaluate.
       num value = evaluate(definition, environment);
-      if (parentConnection[name] case (String parentName, int location)) {
-        if (environment[parentName] case ((Object left, String op, Object right), null)) {
-          if (location case -1) {
-            environment[parentName] = ((value, op, right), null);
-          } else if (location case 1) {
-            environment[parentName] = ((left, op, value), null);
-          }
+      var (String parentName, int location) = parentConnection[name]!;
+      if (environment[parentName] case ((Object left, String op, Object right), null)) {
+        if (location case -1) {
+          environment[parentName] = ((value, op, right), null);
+        } else if (location case 1) {
+          environment[parentName] = ((left, op, value), null);
         }
       }
 

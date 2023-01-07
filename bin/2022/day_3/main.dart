@@ -18,10 +18,8 @@ void part1() {
     .map((v) => v.split(RegExp("(?<=.{${v.length ~/ 2}})(?=.{${v.length ~/ 2}})")))
     // Put the characters into a tuple of sets (hooray for experimental features!)
     .map((v) => (v[0].split("").toSet(), v[1].split("").toSet()))
-    // Get their intersections
-    .map((v) => v.$0.intersection(v.$1).toList())
-    // Combine into a list
-    .reduce((a, b) => [...a, ...b])
+    // Get their intersections and combine them.
+    .expand((v) => v.$0.intersection(v.$1))
     // Get the priorities, then sum.
     .fold(0, (a, b) => a + priority(b));
 
@@ -32,17 +30,14 @@ void part2() {
   List<String> lines = File("bin/2022/day_3/assets/main.txt").readAsLinesSync();
   int scores = lines
       // Group the lines into three in the most verbose way possible.
-      .fold<List<List<String>>>([[]],
+      .fold([<String>[]],
             (a, b) => a.last.length == 3
                 ? [...a, [b]]
-                : [...a.sublist(0, a.length - 1), a.last + [b]])
+                : [...a.sublist(0, a.length - 1), [...a.last, b]])
       // Get the common letters in each group.
-      .map((g) => g
+      .expand((g) => g
           .map((v) => v.split("").toSet())
-          .reduce((a, b) => a.intersection(b))
-          .toList())
-      // Combine the letters into a list
-      .reduce((a, b) => [...a, ...b])
+          .reduce((a, b) => a.intersection(b)))
       // Get the priorities, then sum.
       .fold(0, (a, b) => a + priority(b));
 
@@ -50,5 +45,6 @@ void part2() {
 }
 
 void main() {
+  part1();
   part2();
 }

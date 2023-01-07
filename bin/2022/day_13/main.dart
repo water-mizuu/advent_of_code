@@ -7,7 +7,6 @@ typedef Result<R> = (R? value, String? error);
 bool? compare(Object left, Object right) {
   /// Insert working switch-case here.
   (Object, Object) pair = (left, right);
-
   if (pair case (int left, int right)) {
     if (left != right) {
       return left < right;
@@ -36,27 +35,26 @@ bool? compare(Object left, Object right) {
 /// which is itself a variant of recursive descent.
 Result<(Object parsed, int index)> _parse(String input, [int i = 0]) {
   if (input[i] == "[") {
-    if (i + 1 case int i) {
-      List<Object> objects = [];
+    int j = i + 1;
+    List<Object> objects = [];
 
-      while (i < input.length - 1 && input[i] != "]") {
-        if (_parse(input, i) case ((Object element, int _i), null)) {
-          objects.add(element);
-          i = _i;
-        } else {
-          break;
-        }
-
-        if (RegExp(r"\s*,\s*").matchAsPrefix(input, i)?.group(0) case String separator) {
-          i += separator.length;
-        }
+    while (j < input.length - 1 && input[j] != "]") {
+      if (_parse(input, j) case ((Object element, int _i), null)) {
+        objects.add(element);
+        j = _i;
+      } else {
+        break;
       }
 
-      if (input[i] == "]") {
-        return ((objects, i + 1), null);
+      if (RegExp(r"\s*,\s*").matchAsPrefix(input, j)?.group(0) case String separator) {
+        j += separator.length;
       }
-      return (null, "Expected a closing delimiter at $i");
     }
+
+    if (input[j] == "]") {
+      return ((objects, j + 1), null);
+    }
+    return (null, "Expected a closing delimiter at $j");
   } else if (RegExp(r"\d+").matchAsPrefix(input, i)?.group(0) case String span) {
     return ((int.parse(span), i + span.length), null);
   } else {
@@ -86,12 +84,11 @@ void part1() {
     if (line.isNotEmpty) {
       pair.add(line);
     } else {
-      if (parse(pair[0]) case (Object left, null)) {
-        if (parse(pair[1]) case (Object right, null)) {
-          pairs.add((left, right));
-          pair.clear();
-        }
-      }
+      var (left as Object , _) = parse(pair[0]);
+      var (right as Object, _) = parse(pair[1]);
+
+      pairs.add((left, right));
+      pair.clear();
     }
   }
   /// This, or rather, the lack of this block, costed me 30 minutes of
@@ -146,7 +143,7 @@ void part2() {
     }
   }
 
-  int decoderKey = leftIndex*rightIndex;
+  int decoderKey = leftIndex * rightIndex;
 
   print(decoderKey);
 }
@@ -154,14 +151,4 @@ void part2() {
 void main() {
   part1();
   part2();
-
-  (String? v1, int? v2) values = (null, 3);
-  switch (values) {
-    case (String v, null):
-      print(v);
-      break;
-    case (null, int v):
-      print(v);
-      break;
-  }
 }

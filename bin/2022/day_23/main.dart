@@ -113,7 +113,7 @@ void displayElves(Set<Point> elves) {
 }
 
 void part1() {
-  List2<String> input = File("bin/2022/day_23/assets/test_s.txt") //
+  List2<String> input = File("bin/2022/day_23/assets/main.txt") //
       .readAsLinesSync()
       .map((r) => r.split(""))
       .toList();
@@ -130,9 +130,9 @@ void part1() {
 
   displayElves(elves);
   for (int i = 0; i < rounds; ++i) {
-    if (move(elves, i) case (Set<Point> newElves, _)) {
-      elves = newElves;
-    }
+    var (Set<Point> newElves, _) = move(elves, i);
+
+    elves = newElves;
   }
   displayElves(elves);
 
@@ -146,7 +146,7 @@ void part1() {
 }
 
 void part2() {
-  List2<String> input = File("bin/2022/day_23/assets/test_s.txt") //
+  List2<String> input = File("bin/2022/day_23/assets/main.txt") //
       .readAsLinesSync()
       .map((r) => r.split(""))
       .toList();
@@ -162,13 +162,12 @@ void part2() {
 
   displayElves(elves);
   for (int i = 0; ; ++i) {
-    if (move(elves, i) case (Set<Point> newElves, int moves)) {
-      if (moves == 0) {
-        print(i + 1);
-        break;
-      }
-      elves = newElves;
+    var (Set<Point> newElves, int moves) = move(elves, i);
+    if (moves == 0) {
+      print(i + 1);
+      break;
     }
+    elves = newElves;
   }
   displayElves(elves);
 }

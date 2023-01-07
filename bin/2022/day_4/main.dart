@@ -22,13 +22,12 @@ void part1() {
 
   int count = 0;
   for (String line in lines) {
-    if (line.split(",") case [String left, String right]) {
-      Range leftRange = RangeMethods.parse(left);
-      Range rightRange = RangeMethods.parse(right);
+    var [String left, String right] = line.split(",");
+    Range leftRange = RangeMethods.parse(left);
+    Range rightRange = RangeMethods.parse(right);
 
-      if (leftRange.includes(rightRange) || rightRange.includes(leftRange)) {
-        ++count;
-      }
+    if (leftRange.includes(rightRange) || rightRange.includes(leftRange)) {
+      ++count;
     }
   }
   print(count);
@@ -38,18 +37,18 @@ void part2() {
   List<String> lines = File("bin/2022/day_4/assets/main.txt").readAsLinesSync();
   int count = 0;
   for (String line in lines) {
-    if (line.split(",") case [String left, String right]) {
-      Range leftRange = RangeMethods.parse(left);
-      Range rightRange = RangeMethods.parse(right);
+    var [String left, String right] = line.split(",");
+    Range leftRange = RangeMethods.parse(left);
+    Range rightRange = RangeMethods.parse(right);
 
-      if (leftRange.overlaps(rightRange)) {
-        ++count;
-      }
+    if (leftRange.overlaps(rightRange)) {
+      ++count;
     }
   }
   print(count);
 }
 
 void main() {
+  part1();
   part2();
 }
