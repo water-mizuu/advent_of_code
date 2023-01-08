@@ -11,14 +11,14 @@ Iterable<Point> generatePath(List<Point> points) sync* {
     var (int tx, int ty) = points[i + 1];
     /// Declare `dx` as the constrained difference of `fx` and `tx`,
     ///   and only execute the loop if it is not 0.
-    if ((tx - fx).sign case int dx && != 0) {
+    if ((tx - fx).sign case int dx when dx != 0) {
       /// Start from `fx`, up to one above `tx`
       for (int x = fx; x != tx + dx; x += dx) {
         yield (x, fy);
       }
     }
     /// Same logic as `dx`, but this time in `dy`.
-    if ((ty - fy).sign case int dy && != 0) {
+    if ((ty - fy).sign case int dy when dy != 0) {
       for (int y = fy; y != ty + dy; y += dy) {
         yield (fx, y);
       }
