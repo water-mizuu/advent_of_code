@@ -30,19 +30,19 @@ String convertToSnafu(int input) {
     var (int _number, int mod) = number.divMod(5);
     number = _number;
 
-    if (mod == 0) {
-      chars.add("0");
-    } else if (mod == 1) {
-      chars.add("1");
-    } else if (mod == 2) {
-      chars.add("2");
-    } else if (mod == 3) {
-      chars.add("=");
-      number += 1;
-    } else if (mod == 4) {
-      chars.add("-");
-      number += 1;
-    }
+    String character = switch (mod) {
+      (>= 0) && (< 3) => "$mod",
+      3 => "=",
+      4 => "-",
+      _ => throw Error()
+    };
+    chars.add(character);
+
+    int increment = switch (mod) {
+      (>= 0) && (< 3) => 0,
+      _ => 1,
+    };
+    number += increment;
   }
 
   return chars.reversed.join();
