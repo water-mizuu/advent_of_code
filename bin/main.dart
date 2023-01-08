@@ -1,11 +1,8 @@
-import "dart:math";
+typedef Point = ({int x, int y});
 
 void main() {
-  int value = Random().nextInt(3);
-  String conversion = switch (value) {
-    0 => "Zero",
-    1 => "One",
-    _ => throw Error(),
-  };
-  print(conversion);
+  var point = (x: 30, y: 50);
+  var (x: int x, y: int y) = point;
+
+  print(x);
 }
