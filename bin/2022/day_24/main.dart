@@ -21,7 +21,10 @@ Set<Blizzard> iterate(Set<Blizzard> blizzards, Set<Point> walls) {
 
   for (Blizzard blizzard in blizzards) {
     if (blizzard case (Point position, ("^" || "v") && String direction)) {
-      Point change = {"^": (0, -1), "v": (0, 1)}[direction] ?? (throw Error());
+      Point change = switch(direction) {
+        "^" => (0, -1),
+        "v" => (0, 1),
+      };
       Point newPosition = position + change;
 
       if (walls.contains(newPosition)) {
@@ -33,7 +36,10 @@ Set<Blizzard> iterate(Set<Blizzard> blizzards, Set<Point> walls) {
       }
       newBlizzards.add((newPosition, direction));
     } else if (blizzard case (Point position, (">" || "<") && String direction)) {
-      Point change = {">": (1, 0), "<": (-1, 0)}[direction] ?? (throw Error());
+      Point change = switch(direction) {
+        ">" => (1, 0),
+        "<" => (-1, 0),
+      };
       Point newPosition = position + change;
 
       if (walls.contains(newPosition)) {
@@ -80,7 +86,11 @@ Set<Blizzard> iterate(Set<Blizzard> blizzards, Set<Point> walls) {
     }
   }
 
-  return ((start!, end!), board, blizzards, walls);
+  if (start == null || end == null) {
+    throw StateError("Empty lines!");
+  }
+
+  return ((start, end), board, blizzards, walls);
 }
 
 void displayBoard(Set<Blizzard> blizzards, Set<Point> walls, [Point? person]) {
@@ -105,11 +115,13 @@ void displayBoard(Set<Blizzard> blizzards, Set<Point> walls, [Point? person]) {
   if (bottomRight - topLeft + (1, 1) case (int width, int height)) {
     for (int y = 0; y < height; ++y) {
       for (int x = 0; x < width; ++x) {
-        if (person == (x, y)) {
+        Point point = (x, y);
+
+        if (person == point) {
           stdout.write("E");
-        } else if (blizzardDisplays[(x, y)] case String v) {
+        } else if (blizzardDisplays[point] case String v) {
           stdout.write(v);
-        } else if (walls.contains((x, y))) {
+        } else if (walls.contains(point)) {
           stdout.write("#");
         } else {
           stdout.write(".");
