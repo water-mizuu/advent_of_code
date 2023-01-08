@@ -1,17 +1,20 @@
 import "dart:io";
 import "dart:math";
 
-int convertFromSnafu(String input) {
-  Map<String, int> values = {
-    "-": -1,
-    "=": -2,
-  };
+extension on int {
+  (int, int) divMod(int right) => (this ~/ right, this % right);
+}
 
+int convertFromSnafu(String input) {
   int sum = 0;
   List<String> reversed = input.split("").reversed.toList();
   for (int i = 0; i < reversed.length; ++i) {
     String digit = reversed[i];
-    int value = values[digit] ?? int.parse(digit);
+    int value = switch(digit) {
+      "-" => -1,
+      "=" => -2,
+      _ => int.parse(digit),
+    };
 
     sum += value * pow(5, i).toInt();
   }
@@ -24,24 +27,20 @@ String convertToSnafu(int input) {
 
   int number = input;
   while (number > 0) {
-    int mod = number % 5;
+    var (int _number, int mod) = number.divMod(5);
+    number = _number;
 
-    if (mod case const 0) {
+    if (mod == 0) {
       chars.add("0");
-      number ~/= 5;
-    } else if (mod case const 1) {
+    } else if (mod == 1) {
       chars.add("1");
-      number ~/= 5;
-    } else if (mod case const 2) {
+    } else if (mod == 2) {
       chars.add("2");
-      number ~/= 5;
-    } else if (mod case const 3) {
+    } else if (mod == 3) {
       chars.add("=");
-      number ~/= 5;
       number += 1;
-    } else if (mod case const 4) {
+    } else if (mod == 4) {
       chars.add("-");
-      number ~/= 5;
       number += 1;
     }
   }
