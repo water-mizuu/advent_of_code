@@ -79,11 +79,13 @@ void part1() {
 
           bool? valid = map[next];
           if (valid case null) {
-            next = direction == (1, 0) ? (minX[position.y]!, position.y)
-                  : direction == (0, 1) ? (position.x, minY[position.x]!)
-                  : direction == (-1, 0) ? (maxX[position.y]!, position.y)
-                  : direction == (0, -1) ? (position.x, maxY[position.x]!)
-                  : throw StateError("Unknown direction $direction");
+            next = switch (direction) {
+              (1, 0) => (minX[position.y]!, position.x),
+              (0, 1) => (position.x, minY[position.x]!),
+              (-1, 0) => (maxX[position.y]!, position.y),
+              (0, -1) => (position.x, maxY[position.x]!),
+              _ => throw StateError("Unknown direction $direction")
+            };
             valid = map[next];
           }
 
@@ -216,11 +218,13 @@ void part2() {
               newPosition = (length - 1 - newPosition.y, newPosition.x);
             }
 
-            newPosition = newDirectionIndex == 0 ? (0, newPosition.y)
-                        : newDirectionIndex == 1 ? (newPosition.x, 0)
-                        : newDirectionIndex == 2 ? (length - 1, newPosition.y)
-                        : newDirectionIndex == 3 ? (newPosition.x, length - 1)
-                        : throw Exception();
+            newPosition = switch (newDirectionIndex) {
+              0 => (0, newPosition.y),
+              1 => (newPosition.x, 0),
+              2 => (length - 1, newPosition.y),
+              3 => (newPosition.x, length - 1),
+              _ => throw Error()
+            };
             valid = segments[faceSegment[newFace]]![newPosition];
           }
 

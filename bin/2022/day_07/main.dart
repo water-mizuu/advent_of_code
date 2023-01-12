@@ -123,7 +123,7 @@ Entity parseCommands(List<String> lines) {
 /// 2. Traverse the directories.
 /// 3. Simple filter & sum.
 void part1() {
-  List<String> lines = File("bin/2022/day_7/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_07/assets/main.txt").readAsLinesSync();
   Entity root = parseCommands(lines);
   displayEntity(root);
 
@@ -139,7 +139,7 @@ void part1() {
 /// Same as the top, but even easier.
 /// Basically find the smallest possible that will satisfy the space requirement.
 void part2() {
-  List<String> lines = File("bin/2022/day_7/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_07/assets/main.txt").readAsLinesSync();
   Entity root = parseCommands(lines);
 
   int totalSize = root.computeSize();

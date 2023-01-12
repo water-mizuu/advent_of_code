@@ -40,7 +40,7 @@ enum Mode { ones, multiple }
       ///     This means that in:
       ///      [│d│] [│e │]
       ///      [│a│] [│b │]
-      ///       │1│   │2 │ 
+      ///       │1│   │22│ 
       ///     the bars always align.
       var (int start, int end) = span;
       String key = lastLine.substring(start, end);
@@ -106,7 +106,7 @@ void applyCommand(Stacks stacks, Command command, Mode mode) {
 }
 
 void part1() {
-  String input = File("bin/2022/day_5/assets/main.txt")
+  String input = File("bin/2022/day_05/assets/main.txt")
       .readAsStringSync()
       .replaceAll("\r", "");
 
@@ -125,7 +125,7 @@ void part1() {
 }
 
 void part2() {
-  String input = File("bin/2022/day_5/assets/main.txt")
+  String input = File("bin/2022/day_05/assets/main.txt")
       .readAsStringSync()
       .replaceAll("\r", "");
 

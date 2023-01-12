@@ -5,11 +5,12 @@ typedef Move = (String direction, int count);
 typedef Point = (int x, int y);
 
 extension on Point {
-  Point operator-(Point other) => ($0 - other.$0, $1 - other.$1);
+  Point operator +(Point other) => ($0 + other.$0, $1 + other.$1);
+  Point operator -(Point other) => ($0 - other.$0, $1 - other.$1);
 }
 
 List<Move> parseInput() {
-  return File("bin/2022/day_9/assets/main.txt")
+  return File("bin/2022/day_09/assets/main.txt")
     .readAsLinesSync()
     .map((l) => l.split(" "))
     .map((v) => (v[0], int.parse(v[1])))
@@ -18,20 +19,15 @@ List<Move> parseInput() {
 
 Point moveHead(Point head, String direction) {
   /// Move the head according to the direction.
-  if (head case (int x, int y)) {
-    /// (Normal == can work, but I like the case. It feels satisfying.)
-    if (direction case "U") {
-      ++y;
-    } else if (direction case "D") {
-      --y;
-    } else if (direction case "L") {
-      --x;
-    } else if (direction case "R") {
-      ++x;
-    }
+  Point result = head + switch (direction) {
+    "U" => (0, 1),
+    "D" => (0, -1),
+    "L" => (-1, 0),
+    "R" => (1, 0),
+    _ => throw Error(),
+  };
 
-    return (x, y);
-  }
+  return result;
 }
 
 Point moveTail(Point head, Point tail) {

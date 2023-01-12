@@ -18,7 +18,7 @@ extension RangeMethods on Range {
 
 /// How many pairs are there which one range covers the other?
 void part1() {
-  List<String> lines = File("bin/2022/day_4/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_04/assets/main.txt").readAsLinesSync();
 
   int count = 0;
   for (String line in lines) {
@@ -34,7 +34,7 @@ void part1() {
 }
 
 void part2() {
-  List<String> lines = File("bin/2022/day_4/assets/main.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_04/assets/main.txt").readAsLinesSync();
   int count = 0;
   for (String line in lines) {
     var [String left, String right] = line.split(",");

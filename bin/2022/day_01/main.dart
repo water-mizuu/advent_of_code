@@ -2,7 +2,7 @@ import "dart:io";
 import "dart:math" as math;
 
 void part1() {
-  List<String> lines = File("bin/2022/day_1/assets/input.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_01/assets/input.txt").readAsLinesSync();
   List<int> collected = [];
   int buffer = 0;
   for (String line in lines) {
@@ -26,7 +26,7 @@ void part1() {
 }
 
 void part2() {
-  List<String> lines = File("bin/2022/day_1/assets/input.txt").readAsLinesSync();
+  List<String> lines = File("bin/2022/day_01/assets/input.txt").readAsLinesSync();
   List<int> collected = [];
   int buffer = 0;
   for (String line in lines) {
