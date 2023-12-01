@@ -29,6 +29,7 @@ bool? compare(Object left, Object right) {
     throw ArgumentError("I do not know how to compare these! (${left.runtimeType}, ${right.runtimeType})");
   }
 }
+
 /// I could've just used `jsonDecode`, but meh.
 ///
 /// This is also like a parser-combinator thing but made by hand,
@@ -39,7 +40,7 @@ Result<(Object parsed, int index)> _parse(String input, [int i = 0]) {
     List<Object> objects = [];
 
     while (j < input.length - 1 && input[j] != "]") {
-      if (_parse(input, j) case ((Object element, int _i), null)) {
+      if (_parse(input, j) case ((Object element, int _i), == null)) {
         objects.add(element);
         j = _i;
       } else {
@@ -61,14 +62,15 @@ Result<(Object parsed, int index)> _parse(String input, [int i = 0]) {
     return (null, "Unexpected token ${input[i]}");
   }
 }
+
 Result<Object> parse(String input) {
   Result<(Object parsed, int index)> parsed = _parse(input);
 
-  if (parsed case (null, String error)) {
+  if (parsed case (== null, String _)) {
     return parsed;
   }
 
-  if (parsed case ((Object value, _), null)) {
+  if (parsed case ((Object value, _), == null)) {
     return (value, null);
   }
 
@@ -77,6 +79,7 @@ Result<Object> parse(String input) {
 
 void part1() {
   List<String> lines = File("bin/2022/day_13/assets/main.txt").readAsLinesSync();
+
   /// This, or rather, the lack of this linej, costed me 30 minutes of
   /// wondering why my output was wrong. Because I didn't include the last
   /// pair.
@@ -88,7 +91,7 @@ void part1() {
     if (line.isNotEmpty) {
       pair.add(line);
     } else {
-      var (left as Object , _) = parse(pair[0]);
+      var (left as Object, _) = parse(pair[0]);
       var (right as Object, _) = parse(pair[1]);
 
       pairs.add((left, right));
@@ -98,11 +101,11 @@ void part1() {
 
   int sum = 0;
   for (int i = 0; i < pairs.length; ++i) {
-    if (pairs[i] case (Object left, Object right)) {
-      /// This might look redundant, but it *is* nullable
-      if (compare(left, right) case true) {
-        sum += i + 1;
-      }
+    var (Object left, Object right) = pairs[i];
+
+    /// This might look redundant, but it *is* nullable
+    if (compare(left, right) case true) {
+      sum += i + 1;
     }
   }
 
@@ -112,17 +115,17 @@ void part1() {
 void part2() {
   /// The inputs are supposed to be [[2]] and [[6]],
   /// but it's all the same in the end.
-  const List<List<int>> left = [[2]];
-  const List<List<int>> right = [[6]];
+  const List<int> left = [2];
+  const List<int> right = [6];
 
-  List<String> lines = File("bin/2022/day_13/assets/main.txt")
+  List<String> lines = File("bin/2022/day_13/assets/main.txt") //
       .readAsLinesSync()
       .where((line) => line.isNotEmpty)
       .toList();
 
   List<Object> packets = [left, right];
   for (String line in lines) {
-    if (parse(line) case (Object parsed, null)) {
+    if (parse(line) case (Object parsed, == null)) {
       packets.add(parsed);
     }
   }

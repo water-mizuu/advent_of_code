@@ -5,9 +5,9 @@ import "dart:math" as math;
 typedef Point3 = (int x, int y, int z);
 
 extension on Point3 {
-  int get x => $0;
-  int get y => $1;
-  int get z => $2;
+  int get x => $1;
+  int get y => $2;
+  int get z => $3;
 
   Point3 operator +(Point3 other) => (x + other.x, y + other.y, z + other.z);
 }
@@ -60,12 +60,12 @@ void part2() {
 
   /// Find the leftmost possible surface.
   int min = points
-      .map((v) => [v.$0, v.$1, v.$2].reduce(math.min))
+      .expand((v) => [v.$1, v.$2, v.$3])
       .reduce(math.min) - 1;
 
   /// Find the rightmost possible surface.
   int max = points
-      .map((v) => [v.$0, v.$1, v.$2].reduce(math.max))
+      .expand((v) => [v.$1, v.$2, v.$3])
       .reduce(math.max) + 1;
 
   Point3 start = (min, min, min);

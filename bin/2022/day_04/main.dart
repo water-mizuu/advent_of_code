@@ -9,8 +9,8 @@ extension RangeMethods on Range {
     return (integers.first, integers.last);
   }
 
-  int get low => $0;
-  int get high => $1;
+  int get low => $1;
+  int get high => $2;
 
   bool includes(Range other) => low <= other.low && high >= other.high;
   bool overlaps(Range other) => !(low > other.high || high < other.low);

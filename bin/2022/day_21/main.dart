@@ -18,30 +18,30 @@ typedef Definition = ((Object left, String op, Object right)?, num? value);
 
 num evaluate(Definition definition, Map<String, Definition> environment) {
   /// Pattern matching?
-  if (definition case ((num left, String op, num right), null)) {
-    if (op case "+") {
+  if (definition case ((num left, String op, num right), == null)) {
+    if (op == "+") {
       return left + right;
-    } else if (op case "-") {
+    } else if (op == "-") {
       return left - right;
-    } else if (op case "*") {
+    } else if (op == "*") {
       return left * right;
-    } else if (op case "/") {
+    } else if (op == "/") {
       return left / right;
     }
-  } else if (definition case ((String l, String op, num right), null)) {
+  } else if (definition case ((String l, String op, num right), == null)) {
     num left = evaluate(environment[l]!, environment);
 
     return evaluate(((left, op, right), null), environment);
-  } else if (definition case ((num left, String op, String r), null)) {
+  } else if (definition case ((num left, String op, String r), == null)) {
     num right = evaluate(environment[r]!, environment);
 
     return evaluate(((left, op, right), null), environment);
-  } else if (definition case ((Object l, String op, Object r), null)) {
+  } else if (definition case ((Object l, String op, Object r), == null)) {
     num left = evaluate(environment[l]!, environment);
     num right = evaluate(environment[r]!, environment);
 
     return evaluate(((left, op, right), null), environment);
-  } else if (definition case (null, num value)) {
+  } else if (definition case (== null, num value)) {
     return value;
   }
   return 0;
@@ -51,7 +51,7 @@ void part1() {
   List<String> lines = File("bin/2022/day_21/assets/main.txt").readAsLinesSync();
   Map<String, Definition> environment = {
     for ((String, Definition) line in lines.map(parse).whereType<(String, Definition)>())
-      line.$0: line.$1
+      line.$1: line.$2
   };
 
   print(evaluate(environment["root"]!, environment));
@@ -69,7 +69,7 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
     ///   Breadth first search, because we want to start at the roots.
     var (String name, Definition definition) = stack.removeFirst();
     queue.addFirst(name);
-    if (definition case ((String l, String op, String r), null)) {
+    if (definition case ((String l, String _, String r), == null)) {
       if (environment[l] case Definition definition) {
         parentConnection[l] = (name, -1);
         stack.addLast((l, definition));
@@ -81,32 +81,35 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
     }
   }
 
+  /// a = b + 3
+  /// b = a - 3
+
   /// Now, our queue will have the following characteristic:
   ///   The item at [k] is dependent on items exclusively on or before [k - 1].
   ///   Therefore, we can do some mutation while iteration, and we can be sure
   ///   that the environment gets reduced.
   for (String name in queue) {
-    if (environment[name] case (null, num value)) {
+    if (environment[name] case (== null, num value)) {
       /// Destructure the connection.
       var (String parentName, int location) = parentConnection[name]!;
-      if (environment[parentName] case ((Object left, String op, Object right), null)) {
+      if (environment[parentName] case ((Object left, String op, Object right), == null)) {
         /// -1 shows left, 1 shows right.
-        if (location case -1) {
+        if (location == -1) {
           environment[parentName] = ((value, op, right), null);
-        } else if (location case 1) {
+        } else if (location == 1) {
           environment[parentName] = ((left, op, value), null);
         }
         environment.remove(name);
       }
-    } else if (environment[name] case Definition definition && ((num left, String op, num right), null)) {
+    } else if (environment[name] case Definition definition && ((num _, String _, num _), == null)) {
       /// Since we have an expression that we can evaluate,
       ///   then evaluate.
       num value = evaluate(definition, environment);
       var (String parentName, int location) = parentConnection[name]!;
-      if (environment[parentName] case ((Object left, String op, Object right), null)) {
-        if (location case -1) {
+      if (environment[parentName] case ((Object left, String op, Object right), == null)) {
+        if (location == -1) {
           environment[parentName] = ((value, op, right), null);
-        } else if (location case 1) {
+        } else if (location == 1) {
           environment[parentName] = ((left, op, value), null);
         }
       }
@@ -123,16 +126,16 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
 
     /// We set a special case for root. Basically, set the value
     ///   for its left or right.
-    if (key case "root") {
-      if (value case ((String left, _, num right), null)) {
+    if (key == "root") {
+      if (value case ((String left, _, num right), == null)) {
         inverses[left] = (null, right);
-      } else if (value case ((num left, _, String right), null)) {
+      } else if (value case ((num left, _, String right), == null)) {
         inverses[right] = (null, left);
       }
       continue;
     }
 
-    if (value case ((String left, String op, num right), null)) {
+    if (value case ((String left, String op, num right), == null)) {
       /// Solving for the left,
       switch (op) {
         /// v = l + r; l = v - r
@@ -144,7 +147,7 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
         /// v = l / r; l = v * r
         case "/": inverses[left] = ((key, "*", right), null); break;
       }
-    } else if (value case ((num left, String op, String right), null)) {
+    } else if (value case ((num left, String op, String right), == null)) {
       /// Solving for the right,
       switch (op) {
         /// v = l + r; r = v - l
@@ -169,7 +172,7 @@ void part2() {
   List<String> lines = File("bin/2022/day_21/assets/main.txt").readAsLinesSync();
   Map<String, Definition> environment = {
     for ((String, Definition) line in lines.map(parse).whereType<(String, Definition)>())
-      line.$0: line.$1
+      line.$1: line.$2
   };
   environment.remove("humn");
 

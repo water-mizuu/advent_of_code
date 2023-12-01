@@ -20,10 +20,9 @@ extension<E> on List<E> {
 
 (List<Row> rows, Ids ids, Names names) parseInput() {
   List<String> lines = File("bin/2022/day_16/assets/main.txt").readAsLinesSync();
-  RegExp regexp = RegExp(
-    r"Valve (\S+) has flow rate=(\d+); "
-    "(?:(?:tunnels lead to valves)|(?:tunnel leads to valve))"
-    "(.*)");
+  RegExp regexp = RegExp(r"Valve (\S+) has flow rate=(\d+); "
+      "(?:(?:tunnels lead to valves)|(?:tunnel leads to valve))"
+      "(.*)");
 
   int counter = 0;
   Ids ids = {};
@@ -36,10 +35,7 @@ extension<E> on List<E> {
       ids[name] = id;
       names[id] = name;
 
-      Set<String> connections = routes
-          .split(",")
-          .map((v) => v.trim())
-          .toSet();
+      Set<String> connections = routes.split(",").map((v) => v.trim()).toSet();
 
       int rate = int.parse(rateString);
 
@@ -55,7 +51,7 @@ extension<E> on List<E> {
     Graph graph = {};
 
     for (Row row in rows) {
-      if (row case (String name, int id, int rate, Set<String> transitions)) {
+      if (row case (String _, int id, int rate, Set<String> transitions)) {
         graph[id] = (rate, {for (String n in transitions) ids[n]!});
       }
     }
@@ -92,16 +88,13 @@ int dfs(Graph graph, List2<int> distances, int current, List<int> remaining, int
 void part1() {
   if (parseData() case (Graph graph, Ids ids, Names names)) {
     List2<int> distances = [
-      for (int i = 0; i < names.length; ++i)
-        [for (int j = 0; j < names.length; ++j) 100]
+      for (int i = 0; i < names.length; ++i) [for (int j = 0; j < names.length; ++j) 100]
     ];
 
     /// Set the distances between connected pipes to 1:
-    for (MapEntry<int, (int flow, Set<int> connections)> entry in graph.entries) {
-      if ((entry.key, entry.value) case (int id, (int rate, Set<int> connections))) {
-        for (int j in connections) {
-          distances[id][j] = 1;
-        }
+    for (var MapEntry(key: int id, value: (_, Set<int> connections)) in graph.entries) {
+      for (int j in connections) {
+        distances[id][j] = 1;
       }
     }
 
@@ -118,7 +111,7 @@ void part1() {
     int start = ids["AA"]!;
     List<int> nonzero = [
       for (int i = 0; i < names.length; ++i)
-        if ((graph[i]?.$0 ?? 0) > 0) i
+        if (graph[i] case (> 0, _)) i
     ];
 
     print(dfs(graph, distances, start, nonzero, 30));
@@ -133,16 +126,13 @@ int dfs2(Graph graph, List2<int> distances, int start, int current, List<int> re
   }
 
   int result = dfs(graph, distances, start, remaining, 26);
+  for (var (int r, List<int> rr) in remaining.chooseOne()) {
+    if (distances[current][r] case int distance when distance <= timeLimit) {
+      if (graph[r] case (int rate, _)) {
+        int limit = (timeLimit - distance) - 1;
+        int flow = rate * limit + dfs2(graph, distances, start, r, rr, limit);
 
-  for (Cons<int> pair in remaining.chooseOne()) {
-    if (pair case (int r, List<int> rr)) {
-      if (distances[current][r] case int distance when distance <= timeLimit) {
-        if (graph[r] case (int rate, _)) {
-          int limit = (timeLimit - distance) - 1;
-          int flow = rate * limit + dfs2(graph, distances, start, r, rr, limit);
-
-          result = math.max(result, flow);
-        }
+        result = math.max(result, flow);
       }
     }
   }
@@ -151,39 +141,36 @@ int dfs2(Graph graph, List2<int> distances, int start, int current, List<int> re
 }
 
 void part2() {
-  if (parseData() case (Graph graph, Ids ids, Names names)) {
-    List2<int> distances = [
-      for (int i = 0; i < names.length; ++i)
-        [for (int j = 0; j < names.length; ++j) 100]
-    ];
+  var (Graph graph, Ids ids, Names names) = parseData();
+  List2<int> distances = [
+    for (int i = 0; i < names.length; ++i) //
+      [for (int j = 0; j < names.length; ++j) 100]
+  ];
 
-    /// Set the distances between connected pipes to 1:
-    for (MapEntry<int, (int flow, Set<int> connections)> entry in graph.entries) {
-      if ((entry.key, entry.value) case (int id, (int rate, Set<int> connections))) {
-        for (int j in connections) {
-          distances[id][j] = 1;
-        }
-      }
+  /// Set the distances between connected pipes to 1:
+  for (var MapEntry(key: int id, value: (_, Set<int> connections)) in graph.entries) {
+    for (int j in connections) {
+      distances[id][j] = 1;
     }
-
-    /// Floyd-Warshall algorithm.
-    /// O(n^3) algorithm that determines the distance of any node to any node.
-    for (int z = 0; z < names.length; ++z) {
-      for (int y = 0; y < names.length; ++y) {
-        for (int x = 0; x < names.length; ++x) {
-          distances[y][x] = math.min(distances[y][x], distances[y][z] + distances[z][x]);
-        }
-      }
-    }
-
-    int start = ids["AA"]!;
-    List<int> nonzero = [
-      for (int i = 0; i < names.length; ++i)
-        if ((graph[i]?.$0 ?? 0) > 0) i
-    ];
-
-    print(dfs2(graph, distances, start, start, nonzero, 26));
   }
+
+  /// Floyd-Warshall algorithm.
+  /// O(n^3) algorithm that determines the distance of any node to any node.
+  for (int z = 0; z < names.length; ++z) {
+    for (int y = 0; y < names.length; ++y) {
+      for (int x = 0; x < names.length; ++x) {
+        distances[y][x] = math.min(distances[y][x], distances[y][z] + distances[z][x]);
+      }
+    }
+  }
+
+  int start = ids["AA"]!;
+  List<int> nonzero = [
+    for (int i = 0; i < names.length; ++i)
+      if (graph[i] case (> 0, _)) i
+  ];
+
+  print(dfs2(graph, distances, start, start, nonzero, 26));
 }
 
 void main() {

@@ -5,8 +5,8 @@ typedef Move = (String direction, int count);
 typedef Point = (int x, int y);
 
 extension on Point {
-  Point operator +(Point other) => ($0 + other.$0, $1 + other.$1);
-  Point operator -(Point other) => ($0 - other.$0, $1 - other.$1);
+  Point operator +(Point other) => ($1 + other.$1, $2 + other.$2);
+  Point operator -(Point other) => ($1 - other.$1, $2 - other.$2);
 }
 
 List<Move> parseInput() {
@@ -31,7 +31,7 @@ Point moveHead(Point head, String direction) {
 }
 
 Point moveTail(Point head, Point tail) {
-  var (int hx, int hy) = head;
+  // var (int hx, int hy) = head;
   var (int tx, int ty) = tail;
   var (int dx, int dy) = head - tail;
 

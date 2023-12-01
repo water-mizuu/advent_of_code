@@ -5,8 +5,8 @@ typedef Point = (int x, int y);
 typedef Scan = (Point direction, List<Point> checks);
 
 extension on Point {
-  int get x => $0;
-  int get y => $1;
+  int get x => $1;
+  int get y => $2;
 
   Point add(Point other) => this + other;
   Point operator +(Point other) => (this.x + other.x, this.y + other.y);
@@ -67,21 +67,20 @@ void displayElves(Set<Point> elves) {
     }
 
     for (int si = round; si < round + scans.length; ++si) {
-      if (scans[si % scans.length] case (Point d, List<Point> checks)) {
-        if (checks.map(elf.add).any(elves.contains)) {
-          /// If there is an elf here, then continue the scan.
-          continue;
-        }
-
-        /// Since we've found a suitable place,
-        ///   set it as my proposition.
-        Point proposition = d + elf;
-
-        propositions[elf] = proposition;
-        counter[proposition] = (counter[proposition] ??= 0) + 1;
-
-        break;
+      var (Point d, List<Point> checks) = scans[si % scans.length];
+      if (checks.map(elf.add).any(elves.contains)) {
+        /// If there is an elf here, then continue the scan.
+        continue;
       }
+
+      /// Since we've found a suitable place,
+      ///   set it as my proposition.
+      Point proposition = d + elf;
+
+      propositions[elf] = proposition;
+      counter[proposition] = (counter[proposition] ??= 0) + 1;
+
+      break;
     }
 
     /// If we're here, then it means that we're limited by the

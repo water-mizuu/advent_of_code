@@ -10,7 +10,7 @@ int convertFromSnafu(String input) {
   List<String> reversed = input.split("").reversed.toList();
   for (int i = 0; i < reversed.length; ++i) {
     String digit = reversed[i];
-    int value = switch(digit) {
+    int value = switch (digit) {
       "-" => -1,
       "=" => -2,
       _ => int.parse(digit),
@@ -33,8 +33,7 @@ String convertToSnafu(int input) {
     String character = switch (mod) {
       (>= 0) && (< 3) => "$mod",
       3 => "=",
-      4 => "-",
-      _ => throw Error()
+      4 || _ => "-",
     };
     chars.add(character);
 
@@ -49,10 +48,7 @@ String convertToSnafu(int input) {
 }
 
 void part1() {
-  int sum = File("bin/2022/day_25/assets/main.txt")
-      .readAsLinesSync()
-      .map(convertFromSnafu)
-      .reduce((a, b) => a + b);
+  int sum = File("bin/2022/day_25/assets/main.txt").readAsLinesSync().map(convertFromSnafu).reduce((a, b) => a + b);
 
   print(convertToSnafu(sum));
 }

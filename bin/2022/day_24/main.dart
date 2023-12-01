@@ -4,16 +4,16 @@ typedef Point = (int x, int y);
 typedef Blizzard = (Point position, String direction);
 
 extension PointMethods on Point {
-  int get x => $0;
-  int get y => $1;
+  int get x => $1;
+  int get y => $2;
 
   Point operator +(Point other) => (x + other.x, y + other.y);
   Point operator -(Point other) => (x - other.x, y - other.y);
 }
 
 extension BlizzardMethods on Blizzard {
-  Point get position => $0;
-  String get direction => $1;
+  Point get position => $1;
+  String get direction => $2;
 }
 
 Set<Blizzard> iterate(Set<Blizzard> blizzards, Set<Point> walls) {
@@ -21,32 +21,28 @@ Set<Blizzard> iterate(Set<Blizzard> blizzards, Set<Point> walls) {
 
   for (Blizzard blizzard in blizzards) {
     if (blizzard case (Point position, ("^" || "v") && String direction)) {
-      Point change = switch(direction) {
+      Point change = switch (direction) {
         "^" => (0, -1),
         "v" => (0, 1),
+        _ => throw Error(),
       };
       Point newPosition = position + change;
 
       if (walls.contains(newPosition)) {
-        Point wrappedPosition = walls
-              .where((p) => newPosition.x == p.x && newPosition.y != p.y)
-              .single
-          + change;
+        Point wrappedPosition = walls.where((p) => newPosition.x == p.x && newPosition.y != p.y).single + change;
         newPosition = wrappedPosition;
       }
       newBlizzards.add((newPosition, direction));
     } else if (blizzard case (Point position, (">" || "<") && String direction)) {
-      Point change = switch(direction) {
+      Point change = switch (direction) {
         ">" => (1, 0),
         "<" => (-1, 0),
+        _ => throw Error(),
       };
       Point newPosition = position + change;
 
       if (walls.contains(newPosition)) {
-        Point wrappedPosition = walls
-              .where((p) => newPosition.x != p.x && newPosition.y == p.y)
-              .single
-          + change;
+        Point wrappedPosition = walls.where((p) => newPosition.x != p.x && newPosition.y == p.y).single + change;
         newPosition = wrappedPosition;
       }
       newBlizzards.add((newPosition, direction));
@@ -130,21 +126,22 @@ void displayBoard(Set<Blizzard> blizzards, Set<Point> walls, [Point? person]) {
       stdout.writeln();
     }
   }
-
 }
 
 void part1() {
-  const Set<Point> moves = { (0, 1), (-1, 0), (0, 0), (1, 0), (0, -1) };
+  const Set<Point> moves = {(0, 1), (-1, 0), (0, 0), (1, 0), (0, -1)};
 
   List<String> lines = File("bin/2022/day_24/assets/main.txt").readAsLinesSync();
   var ((Point start, Point end), Set<Point> board, Set<Blizzard> blizzards, Set<Point> walls) = parse(lines);
 
-  Set<Point> possible = { start };
+  Set<Point> possible = {start};
 
-  for (int minute = 1; ; ++minute) {
+  for (int minute = 1;; ++minute) {
     blizzards = iterate(blizzards, walls);
+
     /// Get all the points of each blizzard.
-    Set<Point> blizzardPoints = blizzards.map((p) => p.$0).toSet();
+    Set<Point> blizzardPoints = blizzards.map((p) => p.$1).toSet();
+
     /// Set operations instead of explicit structures! Hooray!
     ///   `allowed` is the set of points in the board that are not walls or blizzards
     ///   `nextPossible` is the set of all neighbors & self of each node in `possible` that coincides with allowed.
@@ -161,16 +158,16 @@ void part1() {
 }
 
 void part2() {
-  const Set<Point> moves = { (0, 1), (-1, 0), (0, 0), (1, 0), (0, -1) };
+  const Set<Point> moves = {(0, 1), (-1, 0), (0, 0), (1, 0), (0, -1)};
 
   List<String> lines = File("bin/2022/day_24/assets/main.txt").readAsLinesSync();
   var ((Point start, Point end), Set<Point> board, Set<Blizzard> blizzards, Set<Point> walls) = parse(lines);
-  Set<Point> possibles = { start };
+  Set<Point> possibles = {start};
 
   int segment = 0;
-  for (int minute = 1; ; ++minute) {
+  for (int minute = 1;; ++minute) {
     blizzards = iterate(blizzards, walls);
-    Set<Point> blizzardPoints = blizzards.map((p) => p.$0).toSet();
+    Set<Point> blizzardPoints = blizzards.map((p) => p.$1).toSet();
     Set<Point> allowed = board.difference(walls.union(blizzardPoints));
     Set<Point> nextPossible = possibles.expand((c) => moves.map((n) => n + c)).toSet().intersection(allowed);
 

@@ -19,7 +19,7 @@ void part1() {
     // Put the characters into a tuple of sets (hooray for experimental features!)
     .map((v) => (v[0].split("").toSet(), v[1].split("").toSet()))
     // Get their intersections and combine them.
-    .expand((v) => v.$0.intersection(v.$1))
+    .expand((v) => v.$1.intersection(v.$2))
     // Get the priorities, then sum.
     .fold(0, (a, b) => a + priority(b));
 

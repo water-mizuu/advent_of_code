@@ -42,14 +42,12 @@ class Entity {
     expando ??= Expando<int>();
 
     switch (type) {
-      case const EntityType.file:
+      case EntityType.file:
         return expando[this] = size;
-      case const EntityType.directory:
+      case EntityType.directory:
         expando[this] ??= 0;
 
-        return expando[this] = children
-            .map((c) => c.computeSize(expando: expando))
-            .reduce((a, b) => a + b);
+        return expando[this] = children.map((c) => c.computeSize(expando: expando)).reduce((a, b) => a + b);
     }
   }
 }
@@ -80,8 +78,8 @@ Entity parseCommands(List<String> lines) {
         stack.removeLast();
       } else if (match case ["cd", String args]) {
         if (stack.isNotEmpty) {
-          Entity entity = stack.last.children
-              .firstWhere((e) => e.name == args, orElse: () => Entity.directory(name: args));
+          Entity entity =
+              stack.last.children.firstWhere((e) => e.name == args, orElse: () => Entity.directory(name: args));
 
           stack.add(entity);
         } else {
@@ -127,7 +125,8 @@ void part1() {
   Entity root = parseCommands(lines);
   displayEntity(root);
 
-  int query = root.traverse()
+  int query = root
+      .traverse()
       .where((e) => e.type == EntityType.directory)
       .map((e) => e.computeSize())
       .where((sz) => sz <= 100000)
@@ -145,7 +144,8 @@ void part2() {
   int totalSize = root.computeSize();
   int target = totalSize - 40000000;
 
-  int query = root.traverse()
+  int query = root
+      .traverse()
       .where((e) => e.type == EntityType.directory)
       .map((e) => e.computeSize())
       .where((sz) => sz >= target)

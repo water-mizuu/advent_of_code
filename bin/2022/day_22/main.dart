@@ -7,17 +7,17 @@ typedef Instruction = Object;
 const int directionModulus = 4; // 0 -> RIGHT; 1 -> DOWN; 2 -> LEFT; 3 -> UP
 
 extension on Point {
-  int get x => $0;
-  int get y => $1;
+  int get x => $1;
+  int get y => $2;
 
   Point operator +(Point other) => (x + other.x, y + other.y);
 }
 
 extension on ((int x, int y) segment, Face face, int fromDirection, Face fromFace) {
-  (int x, int y) get segment => $0;
-  Face get face => $1;
-  int get fromDirection => $2;
-  Face get fromFace => $3;
+  (int x, int y) get segment => $1;
+  Face get face => $2;
+  int get fromDirection => $3;
+  Face get fromFace => $4;
 }
 
 const List<Point> directions = [
@@ -34,7 +34,7 @@ void part1() {
   Iterable<RegExpMatch> matches = RegExp(r"(\d+)([RL]?)").allMatches(parts.last);
   Iterable<Instruction> instructions = matches
       .map((x) => (int.parse(x.group(1)!), x.group(2)))
-      .expand((p) => [p.$0, if (p.$1 != null) p.$1!]);
+      .expand((p) => [p.$1, if (p.$2 != null) p.$2!]);
 
   List<String> lines = parts.first.split("\n");
   Point? position;
@@ -78,7 +78,7 @@ void part1() {
           Point next = position + direction;
 
           bool? valid = map[next];
-          if (valid case null) {
+          if (valid case == null) {
             next = switch (direction) {
               (1, 0) => (minX[position.y]!, position.x),
               (0, 1) => (position.x, minY[position.x]!),
@@ -117,7 +117,7 @@ void part2() {
   Iterable<RegExpMatch> matches = RegExp(r"(\d+)([RL]?)").allMatches(parts.last);
   Iterable<Instruction> instructions = matches
       .map((x) => (int.parse(x.group(1)!), x.group(2)))
-      .expand((p) => [p.$0, if (p.$1 != null) p.$1!]);
+      .expand((p) => [p.$1, if (p.$2 != null) p.$2!]);
 
   int length = 50;
 
@@ -202,7 +202,7 @@ void part2() {
           Face newFace = face;
 
           bool? valid = segments[faceSegment[face]!]?[newPosition];
-          if (valid case null) {
+          if (valid case == null) {
             newFace = faceNeighbors[face]![(directionIndex - faceRotations[face]!) % 4];
             newPosition = position;
 

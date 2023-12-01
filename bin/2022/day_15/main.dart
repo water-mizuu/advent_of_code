@@ -7,31 +7,28 @@ typedef Range = (int low, int high);
 typedef Range2d = (Point low, Point high, Point increment);
 
 extension on Point {
-  int get x => $0;
-  int get y => $1;
+  int get x => $1;
+  int get y => $2;
 }
 
 extension on Point {
   (Point, Point)? extrema(int distance, int level) {
-    if (this case (int x, int y)) {
-      if ((level - y).abs() case int ry when ry <= distance) {
-        int dx = distance - ry;
+    var (int x, int y) = this;
+    if ((level - y).abs() case int ry when ry <= distance) {
+      int dx = distance - ry;
 
-        return ((x - dx, level), (x + dx, level));
-      }
+      return ((x - dx, level), (x + dx, level));
     }
   }
 }
 
 extension on Match {
-  List<String> get matches => groups([for (int i = 1; i <= groupCount; ++i) i])
-      .whereType<String>()
-      .toList();
+  List<String> get matches => groups([for (int i = 1; i <= groupCount; ++i) i]).whereType<String>().toList();
 }
 
 extension on Range {
-  int get low => $0;
-  int get high => $1;
+  int get low => $1;
+  int get high => $2;
 
   int get length => high - low + 1;
 
@@ -57,9 +54,7 @@ extension on Range {
 }
 
 extension on Iterable<Range> {
-  Set<Range> subtract(Set<Range> right) => right
-      .fold(this, (acc, now) => acc.expand((v) => v.subtract(now)))
-      .toSet();
+  Set<Range> subtract(Set<Range> right) => right.fold(this, (acc, now) => acc.expand((v) => v.subtract(now))).toSet();
 
   Set<Range> flatten() {
     List<Range> combinedRanges = toList();
@@ -160,7 +155,7 @@ void part2() {
   List<Data> data = parseData("main");
 
   int limit = 4000000;
-  for (int y = 0; y <= limit; ++y){
+  for (int y = 0; y <= limit; ++y) {
     Set<Range> ranges = {};
 
     for (Data datum in data) {

@@ -61,8 +61,8 @@ void expandGrid(List2<String> grid, int y) {
 /// I have no idea how to improve this.
 ///
 bool collides(List2<String> grid, List2<String> rock, Point location, Point direction) {
-  int x = location.$0 + direction.$0;
-  int y = location.$1 + direction.$1;
+  int x = location.$1 + direction.$1;
+  int y = location.$2 + direction.$2;
 
   if (x < 0 || x >= grid[0].length || y < 0 || y >= grid.length) {
     return true;
