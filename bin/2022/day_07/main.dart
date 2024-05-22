@@ -8,10 +8,6 @@ extension MatchGroupExtension on Match {
 enum EntityType { file, directory }
 
 class Entity {
-  final String name;
-  final List<Entity> children;
-  final EntityType type;
-  final int size;
 
   const Entity({required this.name, required this.children, required this.type, required this.size});
   Entity.directory({required this.name})
@@ -21,6 +17,10 @@ class Entity {
   Entity.file({required this.name, required this.size})
       : children = [],
         type = EntityType.file;
+  final String name;
+  final List<Entity> children;
+  final EntityType type;
+  final int size;
 
   Iterable<Entity> traverse() sync* {
     Queue<Entity> queue = Queue<Entity>()..add(this);

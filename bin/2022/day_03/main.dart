@@ -33,11 +33,11 @@ void part2() {
       .fold([<String>[]],
             (a, b) => a.last.length == 3
                 ? [...a, [b]]
-                : [...a.sublist(0, a.length - 1), [...a.last, b]])
+                : [...a.sublist(0, a.length - 1), [...a.last, b]],)
       // Get the common letters in each group.
       .expand((g) => g
           .map((v) => v.split("").toSet())
-          .reduce((a, b) => a.intersection(b)))
+          .reduce((a, b) => a.intersection(b)),)
       // Get the priorities, then sum.
       .fold(0, (a, b) => a + priority(b));
 

@@ -51,7 +51,7 @@ void part1() {
   List<String> lines = File("bin/2022/day_21/assets/main.txt").readAsLinesSync();
   Map<String, Definition> environment = {
     for ((String, Definition) line in lines.map(parse).whereType<(String, Definition)>())
-      line.$1: line.$2
+      line.$1: line.$2,
   };
 
   print(evaluate(environment["root"]!, environment));
@@ -139,25 +139,25 @@ Map<String, Definition> generateInverse(String root, Map<String, Definition> env
       /// Solving for the left,
       switch (op) {
         /// v = l + r; l = v - r
-        case "+": inverses[left] = ((key, "-", right), null); break;
+        case "+": inverses[left] = ((key, "-", right), null);
         /// v = l - r; l = v + r
-        case "-": inverses[left] = ((key, "+", right), null); break;
+        case "-": inverses[left] = ((key, "+", right), null);
         /// v = l * r; l = v / r
-        case "*": inverses[left] = ((key, "/", right), null); break;
+        case "*": inverses[left] = ((key, "/", right), null);
         /// v = l / r; l = v * r
-        case "/": inverses[left] = ((key, "*", right), null); break;
+        case "/": inverses[left] = ((key, "*", right), null);
       }
     } else if (value case ((num left, String op, String right), == null)) {
       /// Solving for the right,
       switch (op) {
         /// v = l + r; r = v - l
-        case "+": inverses[right] = ((key, "-", left), null); break;
+        case "+": inverses[right] = ((key, "-", left), null);
         /// v = l - r; r = l - v
-        case "-": inverses[right] = ((left, "-", key), null); break;
+        case "-": inverses[right] = ((left, "-", key), null);
         /// v = l * r; r = v / l
-        case "*": inverses[right] = ((key, "/", left), null); break;
+        case "*": inverses[right] = ((key, "/", left), null);
         /// v = l / r; r = l / v
-        case "/": inverses[right] = ((left, "/", key), null); break;
+        case "/": inverses[right] = ((left, "/", key), null);
       }
     }
   }
@@ -172,7 +172,7 @@ void part2() {
   List<String> lines = File("bin/2022/day_21/assets/main.txt").readAsLinesSync();
   Map<String, Definition> environment = {
     for ((String, Definition) line in lines.map(parse).whereType<(String, Definition)>())
-      line.$1: line.$2
+      line.$1: line.$2,
   };
   environment.remove("humn");
 

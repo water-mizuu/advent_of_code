@@ -40,10 +40,10 @@ void part1() {
           .split("->")
           .map((v) => v
               .split(",")
-              .map(int.parse))
+              .map(int.parse),)
           .map((v) => (v.first, v.last))
-          .toList())
-      .expand((p) => generatePath(p))
+          .toList(),)
+      .expand(generatePath)
       .toSet();
 
   /// Save the maximum y-coordinate for comparison.
@@ -111,10 +111,10 @@ void part2() {
           .split("->")
           .map((v) => v
               .split(",")
-              .map(int.parse))
+              .map(int.parse),)
           .map((v) => (v.first, v.last))
-          .toList())
-      .expand((p) => generatePath(p))
+          .toList(),)
+      .expand(generatePath)
       .toSet();
 
   /// The floor is two units lower than the lowest block.

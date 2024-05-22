@@ -40,11 +40,11 @@ void part1() {
   Point? position;
 
   int directionIndex = 0;
-  Map<Point, bool> map = Map<Point, bool>();
-  Map<int, int> minX = Map<int, int>();
-  Map<int, int> maxX = Map<int, int>();
-  Map<int, int> minY = Map<int, int>();
-  Map<int, int> maxY = Map<int, int>();
+  Map<Point, bool> map = <Point, bool>{};
+  Map<int, int> minX = <int, int>{};
+  Map<int, int> maxX = <int, int>{};
+  Map<int, int> minY = <int, int>{};
+  Map<int, int> maxY = <int, int>{};
 
   for (int y = 1; y <= lines.length; ++y) {
     String line = lines[y - 1];

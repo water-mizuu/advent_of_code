@@ -17,7 +17,7 @@ extension BlizzardMethods on Blizzard {
 }
 
 Set<Blizzard> iterate(Set<Blizzard> blizzards, Set<Point> walls) {
-  Set<Blizzard> newBlizzards = Set();
+  Set<Blizzard> newBlizzards = {};
 
   for (Blizzard blizzard in blizzards) {
     if (blizzard case (Point position, ("^" || "v") && String direction)) {

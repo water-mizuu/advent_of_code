@@ -88,7 +88,7 @@ int dfs(Graph graph, List2<int> distances, int current, List<int> remaining, int
 void part1() {
   if (parseData() case (Graph graph, Ids ids, Names names)) {
     List2<int> distances = [
-      for (int i = 0; i < names.length; ++i) [for (int j = 0; j < names.length; ++j) 100]
+      for (int i = 0; i < names.length; ++i) [for (int j = 0; j < names.length; ++j) 100],
     ];
 
     /// Set the distances between connected pipes to 1:
@@ -111,7 +111,7 @@ void part1() {
     int start = ids["AA"]!;
     List<int> nonzero = [
       for (int i = 0; i < names.length; ++i)
-        if (graph[i] case (> 0, _)) i
+        if (graph[i] case (> 0, _)) i,
     ];
 
     print(dfs(graph, distances, start, nonzero, 30));
@@ -144,7 +144,7 @@ void part2() {
   var (Graph graph, Ids ids, Names names) = parseData();
   List2<int> distances = [
     for (int i = 0; i < names.length; ++i) //
-      [for (int j = 0; j < names.length; ++j) 100]
+      [for (int j = 0; j < names.length; ++j) 100],
   ];
 
   /// Set the distances between connected pipes to 1:
@@ -167,7 +167,7 @@ void part2() {
   int start = ids["AA"]!;
   List<int> nonzero = [
     for (int i = 0; i < names.length; ++i)
-      if (graph[i] case (> 0, _)) i
+      if (graph[i] case (> 0, _)) i,
   ];
 
   print(dfs2(graph, distances, start, start, nonzero, 26));

@@ -4,14 +4,12 @@ import "dart:io";
 /// Just a wee bit of a hack.
 ///
 class Box {
-  final int value;
   const Box(this.value);
+  final int value;
 
   @override
   bool operator ==(Object other) => identical(this, other);
 
-  @override
-  int get hashCode => super.hashCode;
 
   @override
   String toString() => "$value";

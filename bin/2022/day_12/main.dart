@@ -88,7 +88,7 @@ void part1() {
       .map((v) => v
           .map((c) => c == "S" ? "a" : c == "E" ? "z" : c)
           .map((c) => c.codeUnits.first)
-          .toList())
+          .toList(),)
       .toList();
 
   /// If anyone has tips how to do this better, maybe
@@ -96,12 +96,12 @@ void part1() {
   Point start = [
     for (int y = 0; y < input.length; ++y)
       for (int x = 0; x < input[y].length; ++x)
-        if (input[y][x] == "S") (x, y)
+        if (input[y][x] == "S") (x, y),
   ].single;
   Point target = [
     for (int y = 0; y < input.length; ++y)
       for (int x = 0; x < input[y].length; ++x)
-        if (input[y][x] == "E") (x, y)
+        if (input[y][x] == "E") (x, y),
   ].single;
 
   Table transitions = validTransitions(grid);
@@ -120,19 +120,19 @@ void part2() {
       .map((v) => v
           .map((c) => c == "S" ? "a" : c == "E" ? "z" : c)
           .map((c) => c.codeUnits.first)
-          .toList())
+          .toList(),)
       .toList();
 
   /// The only difference from the first part. Huh.
   List<Point> start = [
     for (int y = 0; y < grid.length; ++y)
       for (int x = 0; x < grid[y].length; ++x)
-        if (grid[y][x] == "a".codeUnits.first) (x, y)
+        if (grid[y][x] == "a".codeUnits.first) (x, y),
   ];
   Point target = [
     for (int y = 0; y < input.length; ++y)
       for (int x = 0; x < input[y].length; ++x)
-        if (input[y][x] == "E") (x, y)
+        if (input[y][x] == "E") (x, y),
   ].single;
 
   Table transitions = validTransitions(grid);

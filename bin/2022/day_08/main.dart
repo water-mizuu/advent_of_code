@@ -6,7 +6,7 @@ typedef List2<T> = List<List<T>>;
 List2<int> readInput() {
   List2<int> list = [
     for (String line in File("bin/2022/day_08/assets/main.txt").readAsLinesSync())
-      [for (String c in line.split("")) int.parse(c)]
+      [for (String c in line.split("")) int.parse(c)],
   ];
 
   return list;

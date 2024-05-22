@@ -125,14 +125,12 @@ void part1() {
             /// If the move doesn't collide, then move left.
             x -= 1;
           }
-          break;
         case ">":
           /// Move right
           if (!collides(grid, rock, (x, y), (1, 0))) {
             /// If the move doesn't collide, then move right.
             x += 1;
           }
-          break;
       }
 
       /// Move down
@@ -208,7 +206,7 @@ void part2() {
 
   /// Keeps track of the first keys that show up.
   ///   Preserves order (important).
-  Map<Key, int> cache = LinkedHashMap<Key, int>();
+  Map<Key, int> cache = <Key, int>{};
   for (int i = 0; i < rockCount; ++i) {
     /// We're basically simulating Iterator<?>.
     pr = (pr + 1) % rocks.length;
@@ -270,7 +268,6 @@ void part2() {
               /// If the move doesn't collide, then move left.
               x -= 1;
             }
-            break;
           case ">":
             /// Move right
 
@@ -278,7 +275,6 @@ void part2() {
               /// If the move doesn't collide, then move right.
               x += 1;
             }
-            break;
         }
 
         /// Move down

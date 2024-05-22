@@ -9,14 +9,6 @@ typedef Resources = ({int ore, int clay, int obsidian, int geode});
 typedef Entry = (int time, Resources goods, Resources robots);
 
 class Blueprint {
-  final int id;
-  final int oreRobotCost;
-  final int clayRobotCost;
-  final ({int ore, int clay}) obsidianRobotCost;
-  final ({int ore, int obsidian}) geodeRobotCost;
-  final int maxOreCost;
-  final int maxClayCost;
-  final int maxObsidianCost;
 
   Blueprint({
     required this.id,
@@ -27,6 +19,14 @@ class Blueprint {
   }) : maxOreCost = [oreRobotCost, clayRobotCost, obsidianRobotCost.ore, geodeRobotCost.ore].reduce(math.max),
        maxClayCost = obsidianRobotCost.clay,
        maxObsidianCost = geodeRobotCost.obsidian;
+  final int id;
+  final int oreRobotCost;
+  final int clayRobotCost;
+  final ({int ore, int clay}) obsidianRobotCost;
+  final ({int ore, int obsidian}) geodeRobotCost;
+  final int maxOreCost;
+  final int maxClayCost;
+  final int maxObsidianCost;
 }
 
 int tryBlueprint(Blueprint bp, int time) {
@@ -75,7 +75,7 @@ int tryBlueprint(Blueprint bp, int time) {
             geode: goods.geode + robots.geode,
           ),
           robots,
-        ));
+        ),);
 
         /// Try buying one ore robot.
         if (robots.ore < bp.maxOreCost && goods.ore >= bp.oreRobotCost) {
@@ -93,7 +93,7 @@ int tryBlueprint(Blueprint bp, int time) {
               obsidian: robots.obsidian,
               geode: robots.geode,
             ),
-          ));
+          ),);
         }
 
         /// Try buying one ore robot.
@@ -112,7 +112,7 @@ int tryBlueprint(Blueprint bp, int time) {
               obsidian: robots.obsidian,
               geode: robots.geode,
             ),
-          ));
+          ),);
         }
 
         /// Try buying one obsidian robot.
@@ -133,7 +133,7 @@ int tryBlueprint(Blueprint bp, int time) {
               obsidian: robots.obsidian + 1,
               geode: robots.geode,
             ),
-          ));
+          ),);
         }
 
         /// Try buying one geode robot.
@@ -153,7 +153,7 @@ int tryBlueprint(Blueprint bp, int time) {
               obsidian: robots.obsidian,
               geode: robots.geode + 1,
             ),
-          ));
+          ),);
         }
       }
     }

@@ -40,9 +40,9 @@ Result<(Object parsed, int index)> _parse(String input, [int i = 0]) {
     List<Object> objects = [];
 
     while (j < input.length - 1 && input[j] != "]") {
-      if (_parse(input, j) case ((Object element, int _i), == null)) {
+      if (_parse(input, j) case ((Object element, int i0), == null)) {
         objects.add(element);
-        j = _i;
+        j = i0;
       } else {
         break;
       }

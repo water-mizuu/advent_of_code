@@ -32,7 +32,7 @@ enum Mode { ones, multiple }
         .allMatches(lastLine)
         .map((v) => (v.start, v.end));
 
-    Stacks _stacks = {};
+    Stacks stacks0 = {};
     for (Span span in indices) {
       /// We assume that:
       ///   1. The keys are always at the bottom.
@@ -44,7 +44,7 @@ enum Mode { ones, multiple }
       ///     the bars always align.
       var (int start, int end) = span;
       String key = lastLine.substring(start, end);
-      Queue<String> stack = _stacks[key] ??= Queue<String>();
+      Queue<String> stack = stacks0[key] ??= Queue<String>();
 
       /// Iterate from the bottom of the stack of the string,
       /// appending to the "stack" queue as we go.
@@ -57,7 +57,7 @@ enum Mode { ones, multiple }
       }
     }
 
-    stacks = _stacks;
+    stacks = stacks0;
   }
 
   /// Command parsing
@@ -65,16 +65,16 @@ enum Mode { ones, multiple }
     List<String> lines = commandString.split("\n");
     RegExp commandRegExp = RegExp(r"move (\d+) from (\d+) to (\d+)");
 
-    List<Command> _commands = [];
+    List<Command> commands0 = [];
     for (String line in lines) {
       List<String?>? groups = commandRegExp.firstMatch(line)?.groups([1, 2, 3]);
 
       if (groups case [String count, String from, String to]) {
-        _commands.add((int.parse(count), from, to));
+        commands0.add((int.parse(count), from, to));
       }
     }
 
-    commands = _commands;
+    commands = commands0;
   }
 
   return (stacks, commands);
@@ -91,17 +91,15 @@ void applyCommand(Stacks stacks, Command command, Mode mode) {
 
         stacks[to]!.addLast(value);
       }
-      break;
 
     /// If it is multiple, take the [count]-last elements
     /// and reverse it, because that's how [.addAll] works.
     case Mode.multiple:
       stacks[to]!.addAll([
         for (int i = 0; i < count; ++i)
-          stacks[from]!.removeLast()
-      ].reversed);
+          stacks[from]!.removeLast(),
+      ].reversed,);
 
-      break;
   }
 }
 

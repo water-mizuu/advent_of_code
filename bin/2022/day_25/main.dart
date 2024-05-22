@@ -27,8 +27,8 @@ String convertToSnafu(int input) {
 
   int number = input;
   while (number > 0) {
-    var (int _number, int mod) = number.divMod(5);
-    number = _number;
+    var (int number0, int mod) = number.divMod(5);
+    number = number0;
 
     String character = switch (mod) {
       (>= 0) && (< 3) => "$mod",
