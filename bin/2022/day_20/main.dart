@@ -10,7 +10,6 @@ class Box {
   @override
   bool operator ==(Object other) => identical(this, other);
 
-
   @override
   String toString() => "$value";
 }
@@ -25,8 +24,9 @@ void part1() {
   for (Box boxed in normalized.toList()) {
     int index = normalized.indexOf(boxed);
 
-    normalized.removeAt(index);
-    normalized.insert((index + boxed.value) % (length - 1), boxed);
+    normalized
+      ..removeAt(index)
+      ..insert((index + boxed.value) % (length - 1), boxed);
   }
 
   int zeroIndex = normalized.indexWhere((b) => b.value == 0);
@@ -51,8 +51,9 @@ void part2() {
     for (int i = 0; i < copy.length; ++i) {
       int index = normalized.indexOf(copy[i]);
 
-      normalized.removeAt(index);
-      normalized.insert((index + copy[i].value) % (length - 1), copy[i]);
+      normalized
+        ..removeAt(index)
+        ..insert((index + copy[i].value) % (length - 1), copy[i]);
     }
   }
 

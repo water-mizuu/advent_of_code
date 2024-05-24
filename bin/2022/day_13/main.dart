@@ -80,7 +80,7 @@ Result<Object> parse(String input) {
 void part1() {
   List<String> lines = File("bin/2022/day_13/assets/main.txt").readAsLinesSync();
 
-  /// This, or rather, the lack of this linej, costed me 30 minutes of
+  /// This, or rather, the lack of this line, costed me 30 minutes of
   /// wondering why my output was wrong. Because I didn't include the last
   /// pair.
   lines.add("");

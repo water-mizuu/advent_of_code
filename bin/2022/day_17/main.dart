@@ -1,4 +1,3 @@
-import "dart:collection";
 import "dart:io";
 import "dart:math" as math;
 
@@ -68,13 +67,16 @@ bool collides(List2<String> grid, List2<String> rock, Point location, Point dire
     return true;
   }
 
-
   for (int gy = y; gy >= y - (rock.length - 1); --gy) {
     for (int gx = x; gx < x + rock[0].length; ++gx) {
       /// Converting between y-inversed grid and y-normal rock
       /// was a struggle. It turned out to be clean in the end though.
-      int ry = y - gy; /// The [r]ock [y]
-      int rx = gx - x; /// The [r]ock [x]
+      int ry = y - gy;
+
+      /// The [r]ock [y]
+      int rx = gx - x;
+
+      /// The [r]ock [x]
 
       if (rock[ry][rx] != " " && grid[gy][gx] != " ") {
         /// Check if the grid is writable.
@@ -105,7 +107,9 @@ void part1() {
   int rockCount = 2022;
   int highest = 1;
 
-  List2<String> grid = [["+", "-", "-", "-", "-", "-", "-", "-", "+"]];
+  List2<String> grid = [
+    ["+", "-", "-", "-", "-", "-", "-", "-", "+"]
+  ];
 
   for (int i = 0; i < rockCount; ++i) {
     rocks.moveNext();
@@ -120,12 +124,14 @@ void part1() {
     while (actions.moveNext()) {
       switch (actions.current) {
         case "<":
+
           /// Move left
           if (!collides(grid, rock, (x, y), (-1, 0))) {
             /// If the move doesn't collide, then move left.
             x -= 1;
           }
         case ">":
+
           /// Move right
           if (!collides(grid, rock, (x, y), (1, 0))) {
             /// If the move doesn't collide, then move right.
@@ -145,8 +151,12 @@ void part1() {
 
     for (int gy = y; gy >= y - (rock.length - 1); --gy) {
       for (int gx = x; gx < x + rock[0].length; ++gx) {
-        int ry = y - gy; /// The [r]ock [y]
-        int rx = gx - x; /// The [r]ock [x]
+        int ry = y - gy;
+
+        /// The [r]ock [y]
+        int rx = gx - x;
+
+        /// The [r]ock [x]
 
         if (rock[ry][rx] != " " && grid[gy][gx] == " ") {
           /// Check if the grid is writable.
@@ -161,8 +171,8 @@ void part1() {
 
 List<int> relativePositions(List2<String> grid, int highest) {
   int rowLength = grid[0].length;
-  Set<int> xs = { for (int x = 0; x < rowLength; ++x) x };
-  List<int> distances = [ for (int x = 0; x < rowLength; ++x) 0 ];
+  Set<int> xs = {for (int x = 0; x < rowLength; ++x) x};
+  List<int> distances = [for (int x = 0; x < rowLength; ++x) 0];
 
   for (int y = highest - 1; y >= 0; --y) {
     for (int x in {...xs}) {
@@ -197,12 +207,18 @@ void part2() {
   int rockCount = 1000000000000;
   int highest = 1;
 
-  List2<String> grid = [["+", "-", "-", "-", "-", "-", "-", "-", "+"]];
+  List2<String> grid = [
+    ["+", "-", "-", "-", "-", "-", "-", "-", "+"]
+  ];
 
   /// Initialize this to invalid indices for
   ///   logic consistency.
-  int pr = -1; /// [p]ointer to [r]ock
-  int pa = -1; /// [p]ointer to [a]ction
+  int pr = -1;
+
+  /// [p]ointer to [r]ock
+  int pa = -1;
+
+  /// [p]ointer to [a]ction
 
   /// Keeps track of the first keys that show up.
   ///   Preserves order (important).
@@ -236,13 +252,14 @@ void part2() {
       int excess = cacheLength - cycleSize;
 
       var (int quo, int rem) = (rockCount - excess).divmod(cycleSize);
+
       /// This is the tail part. If we removed the excess and a
       ///   whole number multiple of the cycle, we're left with
       ///   a part of the cycle that ends somewhere in the middle.
       int remaining = cache.values.elementAt(excess + rem) - first;
 
       /// And finally, put it all together.
-      int calculated  = cycleHeight * quo + first + remaining - 1;
+      int calculated = cycleHeight * quo + first + remaining - 1;
 
       highest = calculated;
 
@@ -262,6 +279,7 @@ void part2() {
         pa = (pa + 1) % actions.length;
         switch (actions[pa]) {
           case "<":
+
             /// Move left
 
             if (!collides(grid, rock, (x, y), (-1, 0))) {
@@ -269,6 +287,7 @@ void part2() {
               x -= 1;
             }
           case ">":
+
             /// Move right
 
             if (!collides(grid, rock, (x, y), (1, 0))) {
@@ -289,8 +308,12 @@ void part2() {
 
       for (int gy = y; gy >= y - (rock.length - 1); --gy) {
         for (int gx = x; gx < x + rock[0].length; ++gx) {
-          int ry = y - gy; /// The [r]ock [y]
-          int rx = gx - x; /// The [r]ock [x]
+          int ry = y - gy;
+
+          /// The [r]ock [y]
+          int rx = gx - x;
+
+          /// The [r]ock [x]
 
           if (rock[ry][rx] != " " && grid[gy][gx] == " ") {
             /// Check if the grid is writable.
